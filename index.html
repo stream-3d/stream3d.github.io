@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Streaming3D: Sequential 3D Generation via Evidential Memory</title>
+<meta name="description" content="Streaming3D: training-free streaming mechanism that turns a frozen view-conditioned 3D generator into a streaming generator with constant cross-chunk memory.">
+<style>
+:root {
+  --fg: #1c1c1c;
+  --muted: #5b6470;
+  --accent: #2b6cb0;
+  --bg: #ffffff;
+  --soft-bg: #f6f7f9;
+  --border: #e2e6ec;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Helvetica Neue", "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+  line-height: 1.6;
+  font-size: 17px;
+}
+.container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+header { padding: 64px 0 24px; text-align: center; border-bottom: 1px solid var(--border); }
+h1 { font-size: 38px; line-height: 1.2; margin: 0 0 12px; font-weight: 700; letter-spacing: -0.01em; }
+h1 .sub { display: block; font-size: 22px; font-weight: 500; color: var(--muted); margin-top: 8px; }
+.authors { color: var(--muted); font-size: 17px; margin: 12px 0 6px; }
+.venue { color: var(--muted); font-size: 15px; margin-bottom: 24px; }
+.button-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 18px 0 8px; }
+.btn {
+  display: inline-block;
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg);
+  background: var(--soft-bg);
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn:hover { background: #ebeef2; border-color: #ccd2da; }
+.btn-primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.btn-primary:hover { background: #2f3640; border-color: #2f3640; }
+section { padding: 36px 0 12px; border-bottom: 1px solid var(--border); }
+section:last-of-type { border-bottom: none; }
+h2 { font-size: 24px; font-weight: 700; margin: 0 0 14px; }
+p { margin: 0 0 14px; }
+ul { margin: 0 0 14px 22px; padding: 0; }
+li { margin-bottom: 6px; }
+.abstract { font-size: 16px; color: #2b3035; }
+.method-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.feature {
+  padding: 14px 18px;
+  background: var(--soft-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.feature .label { font-size: 13px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; }
+.feature .body { margin-top: 6px; }
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+th { background: var(--soft-bg); font-weight: 700; }
+pre {
+  background: var(--soft-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 13px;
+  overflow-x: auto;
+  margin: 0 0 14px;
+}
+code { font-family: "SF Mono", Menlo, Consolas, monospace; }
+footer {
+  text-align: center;
+  padding: 36px 24px;
+  color: var(--muted);
+  font-size: 13px;
+}
+@media (max-width: 600px) {
+  h1 { font-size: 28px; }
+  h1 .sub { font-size: 18px; }
+  body { font-size: 16px; }
+  .container { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <h1>
+      Streaming3D
+      <span class="sub">Sequential 3D Generation via Evidential Memory</span>
+    </h1>
+    <div class="authors">Anonymous Authors</div>
+    <div class="venue">Anonymous NeurIPS&nbsp;2026 Submission</div>
+    <div class="button-row">
+      <a class="btn btn-primary" href="paper.pdf">📄&nbsp; Paper (PDF)</a>
+      <a class="btn" href="#abstract">Abstract</a>
+      <a class="btn" href="#method">Method</a>
+      <a class="btn" href="#results">Results</a>
+      <a class="btn" href="#bibtex">BibTeX</a>
+    </div>
+  </div>
+</header>
+
+<section id="abstract">
+  <div class="container">
+    <h2>Abstract</h2>
+    <p class="abstract">
+      View-conditioned 3D generators such as SAM&nbsp;3D, TRELLIS, and Hunyuan3D
+      produce high-quality object reconstructions from a single view, but
+      real-world capture often arrives as long monocular streams. Naively
+      applying these generators to streaming inputs leads to severely
+      inconsistent generations.
+    </p>
+    <p class="abstract">
+      We propose <strong>Streaming3D</strong>, the first <em>training-free</em>
+      streaming mechanism that turns a frozen view-conditioned 3D generator
+      into a streaming generator with <strong>constant cross-chunk memory</strong>.
+      Streaming3D maintains a compact <em>evidential memory</em> that
+      selectively caches the most informative historical frames based on
+      their confidence scores. As the stream progresses, the memory
+      dynamically updates to retain a fixed number of informative frames,
+      preventing memory growth from being linear in stream length and
+      preventing degradation over long sequences. The underlying generator
+      remains completely unchanged — no retraining, no architectural
+      modifications, and no auxiliary losses.
+    </p>
+    <p class="abstract">
+      Evaluated on long realistic and synthetic streams, Streaming3D
+      outperforms latent-transport baselines including KV-cache reuse and
+      flow-based feature editing, across both photometric and geometric
+      metrics. It maintains a constant memory footprint and stable
+      reconstruction quality as sequence length increases.
+    </p>
+  </div>
+</section>
+
+<section id="method">
+  <div class="container">
+    <h2>Method</h2>
+    <p>
+      Our key observation is that a frozen view-conditioned generator
+      already exposes conditioning evidence through its
+      cross-attention maps. During a cheap one-step warmup pass, if a
+      query token in a 3D volume attends to a frame both
+      <em>strongly</em> and <em>selectively</em>, that frame provides
+      confident evidence for the corresponding part of the 3D volume.
+      We treat this as an <strong>evidence score</strong> for the view
+      with respect to the query token.
+    </p>
+    <div class="method-grid">
+      <div class="feature">
+        <div class="label">1. Evidence Score</div>
+        <div class="body">
+          A lightweight attention probe over a one-step warmup pass
+          measures the per-token significance of each incoming view.
+        </div>
+      </div>
+      <div class="feature">
+        <div class="label">2. Token-Vote View Memory</div>
+        <div class="body">
+          A fixed-capacity global memory persistently tracks the
+          highest-scoring frames for each query token. Memory size is
+          bounded by <code>2 × Q × D</code> scalars, independent of
+          stream length.
+        </div>
+      </div>
+      <div class="feature">
+        <div class="label">3. Evidence-Based Multi-Generation</div>
+        <div class="body">
+          At each chunk, token-level preferences are aggregated to
+          select a small bundle of top-K frames that collectively cover
+          the most query tokens. The original generator runs on this
+          bounded view set via confidence-weighted Multi-Diffusion-style
+          aggregation in 3D latent space.
+        </div>
+      </div>
+    </div>
+    <p>
+      Two structural properties distinguish this from any latent-transport
+      scheme. First, the cross-chunk memory footprint <strong>does not
+      scale with stream length</strong>. Second, evidence accumulation is
+      <strong>monotonic</strong>: for each query token, the retained
+      evidence score can only remain unchanged or improve as new frames
+      arrive. The conditioning bundle supplied to the generator is
+      therefore never worse, in evidence-score terms, than the bundle at
+      the previous chunk. KV banks, prev-chunk query banks, and
+      FlowEdit-style velocity edits admit no analogous non-degradation
+      guarantee.
+    </p>
+  </div>
+</section>
+
+<section id="results">
+  <div class="container">
+    <h2>Experimental Setup</h2>
+    <p>
+      We evaluate Streaming3D on long-stream 3D generation using the
+      <strong>GSO</strong> and <strong>DL3DV</strong> datasets, which
+      together stress object-scale and scene-scale streaming with
+      repeated structures, large viewpoint changes, partial observations,
+      and accumulated occlusions.
+    </p>
+    <h2 style="margin-top:24px;">Baselines</h2>
+    <ul>
+      <li><strong>Single-view:</strong> Zero123, SAM&nbsp;3D, TRELLIS, TRELLIS.2.</li>
+      <li><strong>Multi-view:</strong> EscherNet, TRELLIS+M.D., TRELLIS.2+M.D.</li>
+      <li><strong>Streaming / latent-transport:</strong> KV-Cache reuse, FlowEdit, MV-SAM3D.</li>
+      <li><strong>Naive aggregation:</strong> Multi-Diffusion with K random views, K farthest-point-sampled views.</li>
+    </ul>
+    <h2 style="margin-top:24px;">Metrics</h2>
+    <table>
+      <tr><th style="width:38%;">Aspect</th><th>Metrics</th></tr>
+      <tr><td><strong>Appearance</strong></td><td>PSNR ↑, SSIM ↑, LPIPS ↓ on held-out novel views</td></tr>
+      <tr><td><strong>Geometry</strong></td><td>Depth MAE ↓, Depth RMSE ↓, Acc@5cm ↑, RelAcc@5 ↑</td></tr>
+    </table>
+    <p>
+      Across both datasets, Streaming3D achieves the strongest overall
+      performance on both appearance and geometry metrics. The gains are
+      consistent across all metrics, indicating that improvement is not
+      limited to image-level rendering quality but also reflects better
+      3D structure. See the paper PDF for the full quantitative tables
+      and ablation results.
+    </p>
+  </div>
+</section>
+
+<section id="bibtex">
+  <div class="container">
+    <h2>BibTeX</h2>
+<pre><code>@inproceedings{anonymous2026streaming3d,
+  title     = {{Streaming3D}: Sequential 3D Generation via Evidential Memory},
+  author    = {Anonymous Authors},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2026},
+  note      = {Anonymous submission, under review}
+}</code></pre>
+  </div>
+</section>
+
+<footer>
+  Anonymous NeurIPS&nbsp;2026 submission. Last updated 2026.
+</footer>
+</body>
+</html>
