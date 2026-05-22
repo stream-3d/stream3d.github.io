@@ -1,11 +1,11 @@
 # Streaming3D Project Page
 
-Anonymous NeurIPS 2026 submission landing page.
+Project landing page for Streaming3D: Sequential 3D Generation via Evidential Memory.
 
 ## Files
 
 - `index.html` — single-page project site (inline CSS, no JS)
-- `paper.pdf` — anonymized submission PDF
+- `paper.pdf` — submission PDF
 
 ## Local preview
 
