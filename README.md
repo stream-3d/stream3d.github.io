@@ -1,6 +1,6 @@
-# Streaming3D Project Page
+# Stream3D Project Page
 
-Project landing page for Streaming3D: Sequential 3D Generation via Evidential Memory.
+Project landing page for Stream3D: Sequential Multi-View 3D Generation via Evidential Memory.
 
 ## Files
 
