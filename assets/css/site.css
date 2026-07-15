@@ -2946,7 +2946,11 @@ figcaption {
 
 .metrics-block {
   display: block;
+  width: 100%;
+  max-width: 1040px;
   margin-top: 120px;
+  margin-right: auto;
+  margin-left: auto;
   padding-top: 72px;
   border-top-color: var(--line-strong);
 }

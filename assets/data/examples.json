@@ -143,29 +143,29 @@
       }
     },
     {
-      "id": "backpack",
-      "title": "Patterned backpack",
-      "dataset": "GSO",
-      "thumbnail": "./assets/media/frames/backpack/frame-04.webp",
-      "totalFrames": 100,
-      "framePositions": [1, 10, 19, 28, 37, 46, 55, 64, 73, 82, 91, 100],
+      "id": "tiger",
+      "title": "Tiger statue",
+      "dataset": "DL3DV",
+      "thumbnail": "./assets/media/frames/tiger/frame-04.webp",
+      "totalFrames": 307,
+      "framePositions": [1, 27, 56, 83, 112, 139, 168, 195, 224, 251, 280, 307],
       "frames": [
-        "./assets/media/frames/backpack/frame-00.webp",
-        "./assets/media/frames/backpack/frame-01.webp",
-        "./assets/media/frames/backpack/frame-02.webp",
-        "./assets/media/frames/backpack/frame-03.webp",
-        "./assets/media/frames/backpack/frame-04.webp",
-        "./assets/media/frames/backpack/frame-05.webp",
-        "./assets/media/frames/backpack/frame-06.webp",
-        "./assets/media/frames/backpack/frame-07.webp",
-        "./assets/media/frames/backpack/frame-08.webp",
-        "./assets/media/frames/backpack/frame-09.webp",
-        "./assets/media/frames/backpack/frame-10.webp",
-        "./assets/media/frames/backpack/frame-11.webp"
+        "./assets/media/frames/tiger/frame-00.webp",
+        "./assets/media/frames/tiger/frame-01.webp",
+        "./assets/media/frames/tiger/frame-02.webp",
+        "./assets/media/frames/tiger/frame-03.webp",
+        "./assets/media/frames/tiger/frame-04.webp",
+        "./assets/media/frames/tiger/frame-05.webp",
+        "./assets/media/frames/tiger/frame-06.webp",
+        "./assets/media/frames/tiger/frame-07.webp",
+        "./assets/media/frames/tiger/frame-08.webp",
+        "./assets/media/frames/tiger/frame-09.webp",
+        "./assets/media/frames/tiger/frame-10.webp",
+        "./assets/media/frames/tiger/frame-11.webp"
       ],
       "models": {
-        "sam3d": "./assets/media/models/backpack/sam3d.glb",
-        "stream3d": "./assets/media/models/backpack/stream3d.glb"
+        "sam3d": "./assets/media/models/tiger/sam3d.glb",
+        "stream3d": "./assets/media/models/tiger/stream3d.glb"
       }
     }
   ]
