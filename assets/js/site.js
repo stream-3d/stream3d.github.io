@@ -151,6 +151,7 @@ async function loadExamples() {
 
     setupCollection("result", examples.results, renderResultDemo);
     setupCollection("comparison", examples.comparisons, renderComparisonDemo);
+    restoreHashPosition();
   } catch (error) {
     if (requestId !== examplesRequestId) return;
 
@@ -159,6 +160,24 @@ async function loadExamples() {
     setCollectionState("result", "error", message, retry);
     setCollectionState("comparison", "error", message, retry);
   }
+}
+
+function restoreHashPosition() {
+  const targetId = decodeURIComponent(window.location.hash.slice(1));
+  if (!targetId) return;
+
+  const target = document.getElementById(targetId);
+  if (!target) return;
+
+  const alignTarget = () => {
+    if (decodeURIComponent(window.location.hash.slice(1)) !== targetId) return;
+    target.scrollIntoView({ block: "start", behavior: "instant" });
+  };
+
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(alignTarget);
+  });
+  window.setTimeout(alignTarget, 600);
 }
 
 function setupCollection(kind, items, renderDemo) {
@@ -933,6 +952,7 @@ function initCitationCopy() {
   const bibtex = document.querySelector("#bibtex");
   if (!button || !status || !bibtex) return;
 
+  const idleLabel = button.textContent.trim();
   let resetTimer = null;
   button.addEventListener("click", async () => {
     if (resetTimer !== null) window.clearTimeout(resetTimer);
@@ -945,13 +965,13 @@ function initCitationCopy() {
       status.textContent = "BibTeX copied to the clipboard.";
     } catch (error) {
       console.error("Unable to copy BibTeX.", error);
-      button.textContent = "Copy BibTeX";
+      button.textContent = idleLabel;
       status.textContent = "Copy failed. Select the BibTeX text and copy it manually.";
     } finally {
       button.disabled = false;
       button.focus();
       resetTimer = window.setTimeout(() => {
-        button.textContent = "Copy BibTeX";
+        button.textContent = idleLabel;
         status.textContent = "";
         resetTimer = null;
       }, 3000);

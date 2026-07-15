@@ -16,7 +16,10 @@
   <title>Stream3D | Sequential Multi-View 3D Generation</title>
   <link rel="preload" href="./assets/fonts/manrope-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./assets/media/frames/vintage-car/frame-05.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex-swap.min.css" integrity="sha384-ZLYhxmRv7L3uIzPeM2/QcB1VDGw0KWFqt0YK5lX+8+ju3nl/Dx+HV5dl06SUiJ6E" crossorigin="anonymous">
   <link rel="stylesheet" href="./assets/css/site.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.js" integrity="sha384-AtrdNsnxl/75rvBneBVH7DtOvCxSVahR2zWqle1coBKd8DEmLoviqNeJSx64gNAs" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous" onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false});"></script>
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"></script>
   <script type="module" src="./assets/js/site.js"></script>
 </head>
@@ -100,7 +103,7 @@
               <div class="viewer-progress" slot="progress-bar"><span></span></div>
             </model-viewer>
             <div class="viewer-caption">
-              <span>Stream3D output</span>
+              <span class="viewer-caption-title"><i aria-hidden="true"></i>Stream3D output</span>
               <span class="mono">Drag to orbit</span>
             </div>
           </div>
@@ -111,7 +114,7 @@
     <section class="section abstract-section" id="abstract" data-section>
       <div class="section-inner">
         <div class="abstract-grid">
-          <div class="section-copy reveal">
+          <div class="section-copy">
             <h2>Long streams. Constant memory.</h2>
             <p class="lead">Stream3D treats streaming 3D generation as an evidence selection problem, not a latent transport problem.</p>
             <p>View-conditioned 3D generators create compelling assets from a single image, yet real observations arrive as long monocular streams. Processing every frame independently creates inconsistent geometry and appearance.</p>
@@ -119,13 +122,16 @@
           </div>
           <div class="abstract-points reveal reveal-delay" role="list" aria-label="Key properties">
             <div role="listitem"><strong>Training-free</strong><span>No retraining, architecture changes, or auxiliary losses.</span></div>
-            <div role="listitem"><strong>Bounded state</strong><span>Cross-chunk memory remains O(QD), independent of stream length.</span></div>
+            <div role="listitem"><strong>Bounded state</strong><span>Cross-chunk memory remains \(\mathcal{O}(QD)\), independent of stream length.</span></div>
             <div role="listitem"><strong>Evidence-aware</strong><span>Different 3D tokens retain the historical views that support them best.</span></div>
           </div>
         </div>
 
         <figure class="framework-figure reveal">
-          <img src="./assets/media/figures/framework.webp" width="2000" height="927" alt="Stream3D framework showing attention probes, evidence scores, adaptive evidential memory, and evidence-based multi-generation" loading="lazy">
+          <div class="figure-surface">
+            <div class="figure-toolbar"><span>Framework overview</span><span>Streaming inference</span></div>
+            <img src="./assets/media/figures/framework.webp" width="2000" height="878" alt="Stream3D framework showing attention probes, evidence scores, adaptive evidential memory, and evidence-based multi-generation" loading="lazy">
+          </div>
           <figcaption>A lightweight warmup pass extracts token-wise evidence. Top-ranked views update a fixed-capacity memory and condition the frozen 3D generator.</figcaption>
         </figure>
       </div>
@@ -190,7 +196,7 @@
           <div class="memory-copy reveal">
             <h2>Memory that does not grow with time</h2>
             <p class="lead">Stream3D stores evidence scores and frame indices, not an ever-growing history of latent activations.</p>
-            <p>For each query token, two Q by D matrices retain the top-D evidence values and their source frame indices. New views can replace weaker evidence, while frames that never enter any token list are discarded.</p>
+            <p>For each query token, two \(Q \times D\) matrices retain the top-\(D\) evidence values and their source frame indices. New views can replace weaker evidence, while frames that never enter any token list are discarded.</p>
             <p class="property-note">The cached evidence at every token and rank is monotonically non-decreasing. This is an evidence-space property, not a claim that every generated sample must improve monotonically.</p>
           </div>
 
@@ -198,11 +204,11 @@
             <div class="scaling-title">Cross-chunk state</div>
             <div class="scaling-chart">
               <span class="axis-y">state size</span>
-              <span class="axis-x">stream length T</span>
+              <span class="axis-x">stream length \(T\)</span>
               <span class="transport-line"></span>
               <span class="stream-line"></span>
-              <span class="transport-label">Latent history grows with T</span>
-              <span class="stream-label">Stream3D O(QD)</span>
+              <span class="transport-label">Latent history grows with \(T\)</span>
+              <span class="stream-label">Stream3D \(\mathcal{O}(QD)\)</span>
             </div>
           </div>
         </div>
@@ -229,12 +235,15 @@
               <span style="--slot: .53"></span>
               <span style="--slot: .37"></span>
             </div>
-            <small class="mono">2 x Q x D scalars</small>
+            <small>\(2QD\) scalars, constant in \(T\)</small>
           </div>
         </div>
 
         <figure class="memory-progression reveal">
-          <img src="./assets/media/figures/memory-progression.webp" width="2000" height="729" alt="Evidence memory and generated 3D mesh improving from chunk 0 to chunk 12" loading="lazy">
+          <div class="figure-surface">
+            <div class="figure-toolbar"><span>Evidence over time</span><span>Chunk 0 to 12</span></div>
+            <img src="./assets/media/figures/memory-progression.webp" width="2000" height="725" alt="Evidence memory and generated 3D mesh improving from chunk 0 to chunk 12" loading="lazy">
+          </div>
           <figcaption>As stronger evidence arrives, retained views change and the reconstructed asset becomes more complete.</figcaption>
         </figure>
       </div>
@@ -242,27 +251,65 @@
 
     <section class="section method-section" id="method" data-section>
       <div class="section-inner">
-        <div class="section-heading reveal">
-          <h2>How evidential memory works</h2>
-          <p>Each chunk adds one inexpensive probe, one bounded memory update, and one full generation pass through the unchanged backbone.</p>
-        </div>
+        <div class="method-layout">
+          <div class="method-intro reveal">
+            <div class="method-intro-sticky">
+              <h2>How evidential memory works</h2>
+              <p>Each chunk adds one inexpensive probe, one bounded memory update, and one full generation pass through the unchanged backbone.</p>
+              <dl class="method-facts">
+                <div><dt>Generator</dt><dd>Frozen</dd></div>
+                <div><dt>Learned parameters</dt><dd>None</dd></div>
+                <div><dt>Cross-chunk state</dt><dd>\(\mathcal{O}(QD)\)</dd></div>
+              </dl>
+            </div>
+          </div>
 
-        <div class="method-steps reveal" role="list">
-          <article role="listitem">
-            <h3>Score evidence</h3>
-            <p>A frozen-prior warmup step reads cross-attention. Strong, selective attention marks a view as useful evidence for a query token.</p>
-            <code>mass x (1 - entropy)</code>
-          </article>
-          <article role="listitem">
-            <h3>Update memory</h3>
-            <p>Each token merges new candidates with its historical top-D list. Weak or redundant frames leave the fixed-capacity state.</p>
-            <code>M, F in R^(Q x D)</code>
-          </article>
-          <article role="listitem">
-            <h3>Generate from selected views</h3>
-            <p>Token ownership votes select the top-K frames. Evidence-weighted multi-view fusion updates a shared 3D latent.</p>
-            <code>top-K ownership votes</code>
-          </article>
+          <div class="method-steps reveal reveal-delay" role="list">
+            <article role="listitem">
+              <div class="method-step-label"><span>01</span><span>Probe</span></div>
+              <h3>Score evidence</h3>
+              <p>A frozen-prior warmup step reads cross-attention. Low entropy indicates that a view provides concentrated evidence for a query token.</p>
+              <div class="math-display">
+                \[
+                  \mathbf{H}_v[q] = -\frac{1}{\log P}
+                  \sum_{i=1}^{P}\widetilde{\mathbf{A}}_v[q,i]
+                  \log \widetilde{\mathbf{A}}_v[q,i]
+                \]
+              </div>
+              <p class="formula-caption">Attention mass rewards relevance; \(1-\mathbf{H}_v[q]\) rewards selectivity.</p>
+            </article>
+
+            <article role="listitem">
+              <div class="method-step-label"><span>02</span><span>Retain</span></div>
+              <h3>Update bounded memory</h3>
+              <p>Each token merges new candidates with its historical top-\(D\) list. Weak or redundant views leave the fixed-capacity state immediately.</p>
+              <div class="math-display">
+                \[
+                  \mathbf{M},\mathbf{F}\in\mathbb{R}^{Q\times D},
+                  \qquad |\text{state}| = 2QD = \mathcal{O}(QD)
+                \]
+              </div>
+              <p class="formula-caption">Evidence values and frame indices stay bounded independently of stream length \(T\).</p>
+            </article>
+
+            <article role="listitem">
+              <div class="method-step-label"><span>03</span><span>Generate</span></div>
+              <h3>Select views and fuse</h3>
+              <p>Token ownership votes select the top-\(K\) conditioning frames. Their normalized evidence weights fuse per-view velocities in the shared 3D latent.</p>
+              <div class="math-display math-display-stack">
+                \[
+                  n_{f_r}=\left|\{(q,j):\mathbf{F}[q,j]=f_r\}\right|,
+                  \qquad \mathcal{V}^{\star}=\operatorname{TopK}_{f_r}\,n_{f_r}
+                \]
+                \[
+                  \overline{V}_{\theta}(z_t)[q] =
+                  \sum_{v\in\mathcal{V}^{\star}}\overline{M}_v[q]\,
+                  V_{\theta}(z_t,v)[q]
+                \]
+              </div>
+              <p class="formula-caption">The underlying view-conditioned generator remains unchanged.</p>
+            </article>
+          </div>
         </div>
       </div>
     </section>
@@ -274,7 +321,10 @@
           <p>Please cite the preprint if Stream3D supports your research.</p>
         </div>
         <div class="citation-code reveal reveal-delay">
-          <button type="button" class="copy-button" data-copy-citation>Copy BibTeX</button>
+          <div class="citation-toolbar">
+            <span>BibTeX</span>
+            <button type="button" class="copy-button" data-copy-citation>Copy</button>
+          </div>
           <pre><code id="bibtex">@misc{zhou2026stream3d,
   title  = {{Stream3D}: Sequential Multi-View 3D Generation via Evidential Memory},
   author = {Kaichen Zhou and Zeyang Bai and Xinhai Chang and
