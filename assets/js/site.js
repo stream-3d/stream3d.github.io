@@ -122,8 +122,13 @@ function normalizeCollection(collection, name) {
       title: String(item.title),
       dataset: item.dataset ? String(item.dataset) : "",
       description: item.description ? String(item.description) : "",
+      thumbnail: item.thumbnail ? String(item.thumbnail) : "",
+      totalFrames: Number.isFinite(Number(item.totalFrames)) ? Number(item.totalFrames) : 0,
       frames: Array.isArray(item.frames)
         ? item.frames.filter((frame) => typeof frame === "string" && frame.length > 0).slice(0, 12)
+        : [],
+      framePositions: Array.isArray(item.framePositions)
+        ? item.framePositions.map(Number).filter(Number.isFinite).slice(0, 12)
         : [],
       models: item.models && typeof item.models === "object" ? item.models : {},
     };
@@ -212,7 +217,25 @@ function setupCollection(kind, items, renderDemo) {
         tabindex: index === 0 ? "0" : "-1",
       },
     });
-    tab.textContent = item.title;
+    const preview = createElement("span", { className: "case-tab-preview" });
+    const previewImage = createElement("img", {
+      attributes: {
+        src: item.thumbnail || item.frames[Math.floor(item.frames.length / 2)] || "",
+        alt: "",
+        loading: index === 0 ? "eager" : "lazy",
+        decoding: "async",
+      },
+    });
+    const copy = createElement("span", { className: "case-tab-copy" });
+    copy.append(
+      createElement("strong", { className: "case-tab-title", text: item.title }),
+      createElement("small", {
+        className: "case-tab-dataset",
+        text: [item.dataset, item.totalFrames ? `${item.totalFrames} frames` : ""].filter(Boolean).join(" · "),
+      }),
+    );
+    preview.append(previewImage);
+    tab.append(preview, copy);
     tabs.append(tab);
     return tab;
   });
@@ -295,6 +318,10 @@ function createDemoHeading(item, kind) {
 
 function createStreamPanel(item, label = "Input stream") {
   const frames = item.frames.slice(0, 12);
+  const totalFrames = item.totalFrames || frames.length;
+  const framePositions = frames.map((_, index) => item.framePositions[index] || index + 1);
+  const counterWidth = Math.max(2, String(totalFrames).length);
+  const sourceFrameLabel = (index) => String(framePositions[index]).padStart(counterWidth, "0");
   const panel = createElement("section", {
     className: "demo-panel stream-panel",
     attributes: { "aria-label": `${item.title} ${label}` },
@@ -320,7 +347,7 @@ function createStreamPanel(item, label = "Input stream") {
     className: "stream-frame",
     attributes: {
       src: frames[0],
-      alt: `${item.title} input stream, frame 1 of ${frames.length}`,
+      alt: `${item.title} input stream, source frame ${framePositions[0]} of ${totalFrames}`,
       decoding: "async",
     },
   });
@@ -360,26 +387,27 @@ function createStreamPanel(item, label = "Input stream") {
     attributes: { "aria-label": `${item.title} input frames` },
   });
   const frameButtons = frames.map((frame, index) => {
+    const sourceFrame = framePositions[index];
     const button = createElement("button", {
       className: "filmstrip-button",
       attributes: {
         type: "button",
-        "aria-label": `Show ${item.title} frame ${index + 1} of ${frames.length}`,
+        "aria-label": `Show ${item.title} source frame ${sourceFrame} of ${totalFrames}`,
         "aria-pressed": index === 0 ? "true" : "false",
-        title: `Frame ${index + 1}`,
+        title: `Source frame ${sourceFrame} of ${totalFrames}`,
       },
     });
     const image = createElement("img", {
       attributes: {
         src: frame,
-        alt: `${item.title} input frame ${index + 1} of ${frames.length}`,
+        alt: `${item.title} input, source frame ${sourceFrame} of ${totalFrames}`,
         loading: "lazy",
         decoding: "async",
       },
     });
     image.addEventListener("error", () => {
       button.classList.add("has-error");
-      button.setAttribute("title", `Frame ${index + 1} could not be loaded`);
+      button.setAttribute("title", `Source frame ${sourceFrame} could not be loaded`);
     });
     button.append(image);
     filmstrip.append(button);
@@ -406,17 +434,17 @@ function createStreamPanel(item, label = "Input stream") {
   const showFrame = (index) => {
     if (destroyed) return;
     selectedFrame = (Number(index) + frames.length) % frames.length;
-    const frameNumber = selectedFrame + 1;
+    const frameNumber = framePositions[selectedFrame];
 
     imageState.hidden = false;
     imageState.classList.remove("is-error");
     imageState.textContent = "Loading frame...";
     frameImage.src = frames[selectedFrame];
-    frameImage.alt = `${item.title} input stream, frame ${frameNumber} of ${frames.length}`;
+    frameImage.alt = `${item.title} input stream, source frame ${frameNumber} of ${totalFrames}`;
     scrubber.value = String(selectedFrame);
-    frameCounter.textContent = `${String(frameNumber).padStart(2, "0")} / ${String(frames.length).padStart(2, "0")}`;
-    frameOutput.value = `${frameNumber} / ${frames.length}`;
-    frameOutput.textContent = `${frameNumber} / ${frames.length}`;
+    frameCounter.textContent = `${sourceFrameLabel(selectedFrame)} / ${String(totalFrames).padStart(counterWidth, "0")}`;
+    frameOutput.value = `${frameNumber} / ${totalFrames}`;
+    frameOutput.textContent = `${frameNumber} / ${totalFrames}`;
 
     frameButtons.forEach((button, buttonIndex) => {
       const active = buttonIndex === selectedFrame;
