@@ -652,7 +652,12 @@ model-viewer[loaded] .viewer-progress {
   display: grid;
   margin-bottom: 64px;
   grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.8fr);
+  align-items: center;
   gap: 94px;
+}
+
+.abstract-heading span {
+  display: block;
 }
 
 .section-copy p:not(.lead),
@@ -1285,10 +1290,10 @@ input[type="range"] {
   white-space: nowrap;
 }
 
-.metrics-table th:first-child,
-.metrics-table td:first-child,
-.metrics-table th:nth-child(2),
-.metrics-table td:nth-child(2) {
+.metrics-table thead th:first-child,
+.metrics-table thead th:nth-child(2),
+.metrics-table tbody th,
+.metrics-table tbody td:first-of-type {
   text-align: left;
 }
 
@@ -2542,10 +2547,6 @@ a.project-link:hover {
   background: var(--paper);
 }
 
-.abstract-section {
-  padding-top: 24px;
-}
-
 .results-section,
 .memory-section,
 .citation-section {
@@ -3203,8 +3204,11 @@ figcaption {
 }
 
 .citation-code pre {
-  padding: 24px 26px 28px;
-  font-size: 10px;
+  padding: 28px 30px 32px;
+  font-size: 12px;
+  line-height: 1.72;
+  font-variant-ligatures: none;
+  tab-size: 2;
 }
 
 .copy-button {
@@ -3228,8 +3232,8 @@ figcaption {
 
 @media (min-width: 981px) {
   .hero {
-    min-height: min(820px, calc(100svh - 54px));
-    padding-bottom: 8px;
+    min-height: calc(100svh - 8px);
+    padding-bottom: 24px;
   }
 }
 
@@ -3520,6 +3524,10 @@ figcaption {
 @media (max-width: 760px) {
   .abstract-section {
     padding-top: 24px;
+  }
+
+  .hero {
+    min-height: calc(100svh - 8px);
   }
 
   .project-link {
