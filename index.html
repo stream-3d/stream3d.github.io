@@ -140,7 +140,7 @@
         <figure class="framework-figure reveal">
           <div class="figure-surface">
             <div class="figure-toolbar"><span>Framework overview</span><span>Streaming inference</span></div>
-            <img src="./assets/media/figures/framework.webp" width="2000" height="878" alt="Stream3D framework showing attention probes, evidence scores, adaptive evidential memory, and evidence-based multi-generation" loading="lazy">
+            <img src="./assets/media/figures/framework.webp" width="2000" height="834" alt="Stream3D framework showing attention probes, evidence scores, adaptive evidential memory, and evidence-based multi-generation" loading="lazy">
           </div>
           <figcaption>A lightweight warmup pass extracts token-wise evidence. Top-ranked views update a fixed-capacity memory and condition the frozen 3D generator.</figcaption>
         </figure>
@@ -152,6 +152,7 @@
         <div class="section-heading reveal">
           <h2>Interactive results</h2>
           <p>Inspect selected real and synthetic streams as rotatable 3D assets. The filmstrip shows views observed across the sequence.</p>
+          <p class="graphics-note">If 3D assets do not load in Chrome, open <code>chrome://settings/system</code> and enable <strong>Use graphics acceleration when available</strong>.</p>
         </div>
 
         <div class="case-tabs" id="result-tabs" role="tablist" aria-label="Result examples"></div>
@@ -278,13 +279,13 @@
           </div>
           <span class="flow-arrow" aria-hidden="true"></span>
           <div class="memory-slots">
-            <span class="flow-label">Retained evidence</span>
+            <span class="flow-label">Fixed-capacity evidence</span>
             <div class="slot-row" aria-hidden="true">
-              <span style="--slot: .95"></span>
               <span style="--slot: .82"></span>
-              <span style="--slot: .68"></span>
-              <span style="--slot: .53"></span>
-              <span style="--slot: .37"></span>
+              <span style="--slot: .82"></span>
+              <span style="--slot: .82"></span>
+              <span style="--slot: .82"></span>
+              <span style="--slot: .82"></span>
             </div>
             <small>\(2QD\) scalars, constant in \(T\)</small>
           </div>
@@ -313,41 +314,22 @@
             <article role="listitem">
               <div class="method-step-label"><span>01</span><span>Probe</span></div>
               <h3>Score evidence</h3>
-              <p>Strong, selective cross-attention indicates that view \(v\) supports query token \(q\).</p>
-              <div class="math-display">
-                \[
-                  \mathbf{M}_v[q] \propto
-                  \operatorname{strength}_v[q]\,
-                  \bigl(1-\mathbf{H}_v[q]\bigr)
-                \]
-              </div>
-              <p class="formula-caption">Attention strength times selectivity.</p>
+              <p>Strong and selective cross-attention signals that an incoming view supports a particular 3D token.</p>
+              <p class="formula-caption">Combine attention strength with selectivity.</p>
             </article>
 
             <article role="listitem">
               <div class="method-step-label"><span>02</span><span>Retain</span></div>
               <h3>Keep the top evidence</h3>
-              <p>Each token keeps only its top-\(D\) scores and the corresponding source-frame indices.</p>
-              <div class="math-display">
-                \[
-                  \mathbf{M},\mathbf{F}\in\mathbb{R}^{Q\times D},
-                  \qquad |\text{state}|=2QD
-                \]
-              </div>
-              <p class="formula-caption">Fixed capacity, independent of stream length.</p>
+              <p>For every token, retain only the strongest evidence scores and the source frames that provided them.</p>
+              <p class="formula-caption">Memory capacity stays fixed across the stream.</p>
             </article>
 
             <article role="listitem">
               <div class="method-step-label"><span>03</span><span>Select</span></div>
               <h3>Vote for views</h3>
-              <p>Token ownership counts rank historical frames; the top-\(K\) become the next conditioning bundle.</p>
-              <div class="math-display">
-                \[
-                  n_f=\bigl|\{(q,j):\mathbf{F}[q,j]=f\}\bigr|,
-                  \quad \mathcal{V}^{\star}=\operatorname{TopK}_{f}\,n_f
-                \]
-              </div>
-              <p class="formula-caption">The frozen generator consumes only the selected views.</p>
+              <p>Count how often each historical frame is retained, then select the most-supported frames for generation.</p>
+              <p class="formula-caption">Only the selected views condition the frozen generator.</p>
             </article>
           </div>
 
@@ -367,13 +349,12 @@
             <span>BibTeX</span>
             <button type="button" class="copy-button" data-copy-citation>Copy</button>
           </div>
-          <pre><code id="bibtex">@misc{zhou2026stream3d,
-  title  = {{Stream3D}: Sequential Multi-View 3D Generation via Evidential Memory},
-  author = {Kaichen Zhou and Zeyang Bai and Xinhai Chang and
-            Mengyu Wang and Paul Pu Liang and Fangneng Zhan},
-  year   = {2026},
-  note   = {Preprint},
-  url    = {https://stream-3d.github.io/stream3d.github.io/}
+          <pre><code id="bibtex">@article{zhou2026stream3d,
+  title   = {Stream3D: Sequential Multi-View 3D Generation via Evidential Memory},
+  author  = {Zhou, Kaichen and Bai, Zeyang and Chang, Xinhai and
+             Wang, Mengyu and Liang, Paul and Zhan, Fangneng},
+  journal = {arXiv preprint arXiv:2605.21472},
+  year    = {2026}
 }</code></pre>
           <p class="copy-status" aria-live="polite" data-copy-status></p>
         </div>

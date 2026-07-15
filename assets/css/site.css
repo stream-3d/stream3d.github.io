@@ -2579,6 +2579,25 @@ h3 {
   line-height: 1.6;
 }
 
+.section-heading .graphics-note {
+  max-width: 760px;
+  margin-top: 9px;
+  color: var(--quiet);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.graphics-note code {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.94em;
+}
+
+.graphics-note strong {
+  color: var(--muted);
+  font-weight: 560;
+}
+
 .abstract-grid {
   gap: 112px;
 }
