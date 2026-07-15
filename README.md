@@ -9,7 +9,7 @@ Public project website for **Stream3D: Sequential Multi-View 3D Generation via E
 - `assets/js/site.js`: result selectors, frame playback, 3D loading, and camera synchronization.
 - `assets/data/examples.json`: website-safe manifest derived from curated selections.
 - `assets/media/`: optimized input frames, paper figures, and selected GLB assets.
-- `paper.pdf`: public preprint.
+- The public preprint is linked from arXiv; no PDF is bundled with the site.
 
 ## Local Preview
 
