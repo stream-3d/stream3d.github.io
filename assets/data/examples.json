@@ -1,0 +1,154 @@
+{
+  "results": [
+    {
+      "id": "vintage-car",
+      "title": "Vintage convertible",
+      "dataset": "DL3DV",
+      "description": "A long real-world orbit with reflective paint, thin wheel geometry, and repeated occlusion.",
+      "leftType": "stream",
+      "leftLabel": "Input stream",
+      "rightLabel": "Stream3D",
+      "frames": [
+        "./assets/media/frames/vintage-car/frame-00.webp",
+        "./assets/media/frames/vintage-car/frame-01.webp",
+        "./assets/media/frames/vintage-car/frame-02.webp",
+        "./assets/media/frames/vintage-car/frame-03.webp",
+        "./assets/media/frames/vintage-car/frame-04.webp",
+        "./assets/media/frames/vintage-car/frame-05.webp",
+        "./assets/media/frames/vintage-car/frame-06.webp",
+        "./assets/media/frames/vintage-car/frame-07.webp",
+        "./assets/media/frames/vintage-car/frame-08.webp",
+        "./assets/media/frames/vintage-car/frame-09.webp",
+        "./assets/media/frames/vintage-car/frame-10.webp",
+        "./assets/media/frames/vintage-car/frame-11.webp"
+      ],
+      "models": {
+        "stream3d": "./assets/media/models/vintage-car/stream3d.glb"
+      }
+    },
+    {
+      "id": "pastel-castle",
+      "title": "Pastel castle ride",
+      "dataset": "DL3DV",
+      "description": "A compact 64-view sequence with fine towers, layered silhouettes, and saturated surface detail.",
+      "leftType": "stream",
+      "leftLabel": "Input stream",
+      "rightLabel": "Stream3D",
+      "frames": [
+        "./assets/media/frames/pastel-castle/frame-00.webp",
+        "./assets/media/frames/pastel-castle/frame-01.webp",
+        "./assets/media/frames/pastel-castle/frame-02.webp",
+        "./assets/media/frames/pastel-castle/frame-03.webp",
+        "./assets/media/frames/pastel-castle/frame-04.webp",
+        "./assets/media/frames/pastel-castle/frame-05.webp",
+        "./assets/media/frames/pastel-castle/frame-06.webp",
+        "./assets/media/frames/pastel-castle/frame-07.webp",
+        "./assets/media/frames/pastel-castle/frame-08.webp",
+        "./assets/media/frames/pastel-castle/frame-09.webp",
+        "./assets/media/frames/pastel-castle/frame-10.webp",
+        "./assets/media/frames/pastel-castle/frame-11.webp"
+      ],
+      "models": {
+        "stream3d": "./assets/media/models/pastel-castle/stream3d.glb"
+      }
+    },
+    {
+      "id": "mario",
+      "title": "Mario figure",
+      "dataset": "GSO",
+      "description": "Ground-truth comparison on a recognizable object with articulated limbs and high-frequency color boundaries.",
+      "leftType": "model",
+      "leftLabel": "Ground truth",
+      "rightLabel": "Stream3D",
+      "frames": [
+        "./assets/media/frames/mario/frame-00.webp",
+        "./assets/media/frames/mario/frame-01.webp",
+        "./assets/media/frames/mario/frame-02.webp",
+        "./assets/media/frames/mario/frame-03.webp",
+        "./assets/media/frames/mario/frame-04.webp",
+        "./assets/media/frames/mario/frame-05.webp",
+        "./assets/media/frames/mario/frame-06.webp",
+        "./assets/media/frames/mario/frame-07.webp",
+        "./assets/media/frames/mario/frame-08.webp",
+        "./assets/media/frames/mario/frame-09.webp",
+        "./assets/media/frames/mario/frame-10.webp",
+        "./assets/media/frames/mario/frame-11.webp"
+      ],
+      "models": {
+        "gt": "./assets/media/models/mario/gt.glb",
+        "stream3d": "./assets/media/models/mario/stream3d.glb"
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "id": "mario",
+      "title": "Mario figure",
+      "dataset": "GSO",
+      "frames": [
+        "./assets/media/frames/mario/frame-00.webp",
+        "./assets/media/frames/mario/frame-01.webp",
+        "./assets/media/frames/mario/frame-02.webp",
+        "./assets/media/frames/mario/frame-03.webp",
+        "./assets/media/frames/mario/frame-04.webp",
+        "./assets/media/frames/mario/frame-05.webp",
+        "./assets/media/frames/mario/frame-06.webp",
+        "./assets/media/frames/mario/frame-07.webp",
+        "./assets/media/frames/mario/frame-08.webp",
+        "./assets/media/frames/mario/frame-09.webp",
+        "./assets/media/frames/mario/frame-10.webp",
+        "./assets/media/frames/mario/frame-11.webp"
+      ],
+      "models": {
+        "sam3d": "./assets/media/models/mario/sam3d.glb",
+        "stream3d": "./assets/media/models/mario/stream3d.glb"
+      }
+    },
+    {
+      "id": "elephant",
+      "title": "Elephant plush",
+      "dataset": "GSO",
+      "frames": [
+        "./assets/media/frames/elephant/frame-00.webp",
+        "./assets/media/frames/elephant/frame-01.webp",
+        "./assets/media/frames/elephant/frame-02.webp",
+        "./assets/media/frames/elephant/frame-03.webp",
+        "./assets/media/frames/elephant/frame-04.webp",
+        "./assets/media/frames/elephant/frame-05.webp",
+        "./assets/media/frames/elephant/frame-06.webp",
+        "./assets/media/frames/elephant/frame-07.webp",
+        "./assets/media/frames/elephant/frame-08.webp",
+        "./assets/media/frames/elephant/frame-09.webp",
+        "./assets/media/frames/elephant/frame-10.webp",
+        "./assets/media/frames/elephant/frame-11.webp"
+      ],
+      "models": {
+        "sam3d": "./assets/media/models/elephant/sam3d.glb",
+        "stream3d": "./assets/media/models/elephant/stream3d.glb"
+      }
+    },
+    {
+      "id": "backpack",
+      "title": "Patterned backpack",
+      "dataset": "GSO",
+      "frames": [
+        "./assets/media/frames/backpack/frame-00.webp",
+        "./assets/media/frames/backpack/frame-01.webp",
+        "./assets/media/frames/backpack/frame-02.webp",
+        "./assets/media/frames/backpack/frame-03.webp",
+        "./assets/media/frames/backpack/frame-04.webp",
+        "./assets/media/frames/backpack/frame-05.webp",
+        "./assets/media/frames/backpack/frame-06.webp",
+        "./assets/media/frames/backpack/frame-07.webp",
+        "./assets/media/frames/backpack/frame-08.webp",
+        "./assets/media/frames/backpack/frame-09.webp",
+        "./assets/media/frames/backpack/frame-10.webp",
+        "./assets/media/frames/backpack/frame-11.webp"
+      ],
+      "models": {
+        "sam3d": "./assets/media/models/backpack/sam3d.glb",
+        "stream3d": "./assets/media/models/backpack/stream3d.glb"
+      }
+    }
+  ]
+}

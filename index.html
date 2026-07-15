@@ -1,483 +1,300 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stream3D: Sequential Multi-View 3D Generation via Evidential Memory</title>
-<meta name="description" content="Stream3D: training-free streaming mechanism that turns a frozen view-conditioned 3D generator into a streaming generator with constant cross-chunk memory.">
-<style>
-:root {
-  --fg: #1c1c1c;
-  --muted: #5b6470;
-  --accent: #2b6cb0;
-  --bg: #ffffff;
-  --soft-bg: #f6f7f9;
-  --border: #e2e6ec;
-}
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
-  font-family: "Helvetica Neue", "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  color: var(--fg);
-  background: var(--bg);
-  line-height: 1.6;
-  font-size: 17px;
-}
-.container { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
-header { padding: 64px 0 24px; text-align: center; border-bottom: 1px solid var(--border); }
-h1 { font-size: 38px; line-height: 1.2; margin: 0 0 12px; font-weight: 700; letter-spacing: -0.01em; }
-h1 .sub { display: block; font-size: 22px; font-weight: 500; color: var(--muted); margin-top: 8px; }
-.authors { color: var(--muted); font-size: 17px; margin: 12px 0 6px; }
-.venue { color: var(--muted); font-size: 15px; margin-bottom: 24px; }
-.button-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 18px 0 8px; }
-.btn {
-  display: inline-block;
-  padding: 9px 18px;
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--fg);
-  background: var(--soft-bg);
-  text-decoration: none;
-  transition: background 0.15s, border-color 0.15s;
-}
-.btn:hover { background: #ebeef2; border-color: #ccd2da; }
-.btn-primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-.btn-primary:hover { background: #2f3640; border-color: #2f3640; }
-section { padding: 36px 0 12px; border-bottom: 1px solid var(--border); }
-section:last-of-type { border-bottom: none; }
-h2 { font-size: 24px; font-weight: 700; margin: 0 0 14px; }
-h3 { font-size: 19px; font-weight: 700; margin: 22px 0 10px; }
-p { margin: 0 0 14px; }
-ul { margin: 0 0 14px 22px; padding: 0; }
-li { margin-bottom: 6px; }
-.abstract { font-size: 16px; color: #2b3035; }
-.method-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
-.feature {
-  padding: 14px 18px;
-  background: var(--soft-bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-.feature .label { font-size: 13px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; }
-.feature .body { margin-top: 6px; }
-figure { margin: 18px 0 22px; text-align: center; }
-figure img { width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
-figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; text-align: left; }
-.figcaption-strong { color: var(--fg); font-weight: 700; }
-.table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
-th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: center; }
-th { background: var(--soft-bg); font-weight: 700; }
-td.lab, th.lab { text-align: left; }
-tr.best td { font-weight: 700; }
-tr.group-head td { background: #fafbfc; font-weight: 700; text-align: left; }
-.footnote { font-size: 13px; color: var(--muted); }
-pre {
-  background: var(--soft-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 14px;
-  font-size: 13px;
-  overflow-x: auto;
-  margin: 0 0 14px;
-}
-code { font-family: "SF Mono", Menlo, Consolas, monospace; }
-footer {
-  text-align: center;
-  padding: 36px 24px;
-  color: var(--muted);
-  font-size: 13px;
-}
-@media (max-width: 600px) {
-  h1 { font-size: 28px; }
-  h1 .sub { font-size: 18px; }
-  body { font-size: 16px; }
-  .container { padding: 0 16px; }
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fbfcfd">
+  <meta name="description" content="Stream3D turns frozen view-conditioned 3D generators into training-free streaming generators with adaptive evidential memory.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Stream3D: Sequential Multi-View 3D Generation via Evidential Memory">
+  <meta property="og:description" content="Training-free streaming 3D generation with bounded cross-chunk memory.">
+  <meta property="og:url" content="https://stream-3d.github.io/stream3d.github.io/">
+  <meta property="og:image" content="https://stream-3d.github.io/stream3d.github.io/assets/media/frames/vintage-car/frame-05.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://stream-3d.github.io/stream3d.github.io/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a7276'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-family='Arial' font-size='30' font-weight='700' fill='white'%3ES3%3C/text%3E%3C/svg%3E">
+  <title>Stream3D | Sequential Multi-View 3D Generation</title>
+  <link rel="preload" href="./assets/fonts/manrope-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/media/frames/vintage-car/frame-05.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="./assets/css/site.css">
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"></script>
+  <script type="module" src="./assets/js/site.js"></script>
 </head>
 <body>
-<header>
-  <div class="container">
-    <h1>
-      Stream3D
-      <span class="sub">Sequential Multi-View 3D Generation via Evidential Memory</span>
-    </h1>
-    <div class="authors">
-      Kaichen Zhou*, Zeyang Bai*, Xinhai Chang*,<br>
-      Mengyu Wang, Paul Pu Liang&dagger;, Fangneng Zhan&dagger;
-    </div>
-    <div class="venue">
-      World Mind Lab, HKUST<br>
-      Media Lab and EECS, MIT<br>
-      Kempner Institute, Harvard University<br>
-      <span style="font-size: 13px;">* Equal Contribution, &dagger; Equal Supervision</span>
-    </div>
-    <div class="button-row">
-      <a class="btn" href="https://arxiv.org/abs/2605.21472">Paper</a>
-      <a class="btn" href="#bibtex">Bibtex</a>
-      <a class="btn" href="https://github.com/stream-3d/stream3d.github.io">Code</a>
-    </div>
-  </div>
-</header>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-<section id="teaser">
-  <div class="container">
-    <figure>
-      <img src="figures/fig1.png" alt="Stream3D teaser: streaming 3D generation with constant memory">
-      <figcaption>
-        <span class="figcaption-strong">Teaser.</span>
-        Stream3D extends a frozen view-conditioned 3D generator (e.g., SAM&nbsp;3D) to long monocular streams.
-        The reconstruction quality progressively improves as more chunks arrive, while the
-        cross-chunk memory footprint stays constant in stream length.
-      </figcaption>
-    </figure>
-  </div>
-</section>
-
-<section id="abstract">
-  <div class="container">
-    <h2>Abstract</h2>
-    <p class="abstract">
-      View-conditioned 3D generators such as SAM&nbsp;3D, TRELLIS, and Hunyuan3D
-      produce high-quality object reconstructions from a single view, but
-      real-world visual observation often arrives as long monocular streams.
-      Naively applying these generators to each streaming frame independently
-      leads to severe temporal inconsistency in the generated results.
-    </p>
-    <p class="abstract">
-      To address this problem, we propose <strong>Stream3D</strong>, the
-      first <em>training-free</em> streaming mechanism that turns a frozen
-      view-conditioned 3D generator into a streaming generator with
-      <strong>constant cross-chunk memory</strong>. Stream3D maintains a
-      compact <em>evidential memory</em> that selectively caches the most
-      informative historical frames based on a proposed evidence score
-      mechanism. As the stream progresses, the memory dynamically updates to
-      retain a fixed number of informative frames, preventing the memory
-      footprint from growing linearly with sequence length. This also prevents
-      degradation over long sequences and keeps the underlying generator
-      completely unchanged — without retraining, architectural modifications,
-      or auxiliary losses.
-    </p>
-    <p class="abstract">
-      Evaluated on both realistic and synthetic streaming benchmarks,
-      Stream3D outperforms latent-transport baselines including KV-cache
-      reuse and flow-based feature editing, across both photometric and
-      geometric metrics. It maintains a constant memory footprint and stable
-      reconstruction quality as sequence length increases.
-    </p>
-  </div>
-</section>
-
-<section id="method">
-  <div class="container">
-    <h2>Framework</h2>
-    <figure>
-      <img src="figures/framework.png" alt="Stream3D framework overview">
-      <figcaption>
-        <span class="figcaption-strong">Framework of Stream3D.</span>
-        Given a streaming video, Stream3D processes frames chunk by chunk.
-        A lightweight warmup pass extracts token-wise evidence scores from the
-        generator's cross-attention. These scores vote for informative frames
-        and update the <strong>Adaptive Evidential Memory</strong>. The
-        top-<em>K</em> informative frames are then passed to the frozen 3D
-        generator for evidence-based multi-view generation. By retaining only
-        compact evidential memory rather than latent states, Stream3D
-        achieves stable long-horizon generation with a constant memory
-        footprint.
-      </figcaption>
-    </figure>
-
-    <h2>Method</h2>
-    <p>
-      Our key observation is that a frozen view-conditioned generator already
-      exposes conditioning evidence through its cross-attention maps. During a
-      cheap one-step warmup pass, if a query token in a 3D volume attends to a
-      frame both <em>strongly</em> and <em>selectively</em>, that frame
-      provides confident evidence for the corresponding part of the 3D volume.
-      We treat this as an <strong>evidence score</strong> for the view with
-      respect to the query token.
-    </p>
-    <div class="method-grid">
-      <div class="feature">
-        <div class="label">1. Evidence Score</div>
-        <div class="body">
-          A lightweight attention probe over a one-step warmup pass with a
-          frozen prior <code>z<sub>0</sub></code> measures the per-token
-          significance of each incoming view, combining attention magnitude
-          with selectivity (1&nbsp;&minus;&nbsp;normalized entropy). The
-          frozen prior makes scores comparable across chunks.
-        </div>
-      </div>
-      <div class="feature">
-        <div class="label">2. Adaptive Evidential Memory</div>
-        <div class="body">
-          Two matrices <code>M, F &isin; ℝ<sup>Q&times;D</sup></code> persistently
-          track each query token's top-<em>D</em> evidence scores and the
-          corresponding global frame indices. Frames that never enter any
-          token's list are discarded immediately. The total footprint is
-          <code>2 &times; Q &times; D</code> scalars — about 50&nbsp;KB for
-          SAM&nbsp;3D (<em>Q</em>=4096, <em>D</em>=4),
-          <strong>independent of stream length</strong>.
-        </div>
-      </div>
-      <div class="feature">
-        <div class="label">3. Evidence-Based Multi-Generation</div>
-        <div class="body">
-          At each chunk, token-level preferences are aggregated into per-frame
-          ownership counts; the top-<em>K</em> frames form a bounded
-          conditioning bundle. The frozen generator runs on this bundle via
-          confidence-weighted Multi-Diffusion-style fusion in 3D latent space,
-          where each query token's velocity is averaged across views weighted
-          by their per-token evidence.
-        </div>
+  <header class="site-header" data-header>
+    <div class="header-inner">
+      <a class="brand" href="#home" aria-label="Stream3D home">Stream3D</a>
+      <nav class="site-nav" aria-label="Primary navigation" data-nav>
+        <a href="#abstract">Abstract</a>
+        <a href="#results">Results</a>
+        <a href="#comparison">Comparison</a>
+        <a href="#memory">Memory</a>
+        <a href="#method">Method</a>
+        <a href="#citation">Citation</a>
+      </nav>
+      <div class="header-actions">
+        <a class="button button-primary button-small" href="./paper.pdf">Paper</a>
+        <button class="menu-button" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-button>
+          <span></span><span></span>
+        </button>
       </div>
     </div>
+  </header>
 
-    <figure>
-      <img src="figures/fig3.png" alt="Adaptive Evidential Memory">
-      <figcaption>
-        <span class="figcaption-strong">Adaptive Evidential Memory.</span>
-        Given streaming input chunks, our memory is updated automatically by
-        retaining the most informative historical views. The color transition
-        from blue to pink indicates increasing frame indices, from earlier to
-        later observations. As the memory accumulates stronger evidence over
-        time, the reconstruction quality progressively improves.
-      </figcaption>
-    </figure>
+  <main id="main">
+    <section class="hero" id="home" data-section>
+      <div class="hero-grid">
+        <div class="hero-copy reveal">
+          <h1>Stream3D</h1>
+          <p class="hero-title">Sequential Multi-View 3D Generation via Evidential Memory</p>
+          <p class="hero-summary">A training-free wrapper that turns frozen single-view 3D generators into coherent streaming generators with bounded cross-chunk memory.</p>
+          <p class="authors">
+            <span>Kaichen Zhou<sup>*</sup></span>
+            <span>Zeyang Bai<sup>*</sup></span>
+            <span>Xinhai Chang<sup>*</sup></span>
+            <span>Mengyu Wang<sup>&dagger;</sup></span>
+            <span>Paul Pu Liang<sup>&dagger;</sup></span>
+            <span>Fangneng Zhan<sup>&dagger;</sup></span>
+          </p>
+          <p class="affiliations">World Mind Lab, HKUST&nbsp;&nbsp; Media Lab and EECS, MIT&nbsp;&nbsp; Kempner Institute, Harvard University</p>
+          <p class="contribution-note"><sup>*</sup> Equal contribution&nbsp;&nbsp; <sup>&dagger;</sup> Joint supervision</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="./paper.pdf">Read the paper</a>
+            <a class="button button-secondary" href="#results">Explore results</a>
+          </div>
 
-    <h3>Why this works: two structural properties</h3>
-    <p>
-      Two structural properties distinguish this from any latent-transport
-      scheme. First, the cross-chunk memory footprint <strong>does not scale
-      with stream length</strong>. Second, evidence accumulation is
-      <strong>monotonic</strong>: for each query token, the retained evidence
-      score can only remain unchanged or improve as new frames arrive. The
-      conditioning bundle supplied to the generator is therefore never worse,
-      in evidence-score terms, than the bundle at the previous chunk.
-      KV banks, prev-chunk query banks, and FlowEdit-style velocity edits
-      admit no analogous non-degradation guarantee.
-    </p>
-  </div>
-</section>
+          <div class="evidence-rail" aria-label="Input views are distilled into a fixed-size evidential memory">
+            <div class="rail-frames" aria-hidden="true">
+              <img src="./assets/media/frames/vintage-car/frame-00.webp" alt="">
+              <img src="./assets/media/frames/vintage-car/frame-03.webp" alt="">
+              <img src="./assets/media/frames/vintage-car/frame-06.webp" alt="">
+              <span class="rail-ellipsis">...</span>
+              <img src="./assets/media/frames/vintage-car/frame-11.webp" alt="">
+            </div>
+            <span class="rail-arrow" aria-hidden="true"></span>
+            <div class="rail-memory" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span>
+              <small>fixed memory</small>
+            </div>
+          </div>
+        </div>
 
-<section id="results">
-  <div class="container">
-    <h2>Experimental Setup</h2>
-    <p>
-      We evaluate Stream3D on long-stream 3D generation using the
-      <strong>GSO</strong> and <strong>NAVI</strong> datasets, which together
-      stress object-scale streaming with repeated structures, large viewpoint
-      changes, partial observations, and accumulated occlusions. Experiments
-      run on a single NVIDIA H100 GPU with SAM&nbsp;3D as the underlying
-      generation backbone. Camera poses and depth for the initial input are
-      estimated by Depth&nbsp;Anything&nbsp;3. We set <em>K</em>=8 and
-      <em>D</em>=1 by default for efficiency, and evaluate streams of
-      length&nbsp;100.
-    </p>
+        <div class="hero-media reveal reveal-delay">
+          <div class="hero-viewer-shell">
+            <model-viewer
+              class="hero-viewer"
+              src="./assets/media/models/vintage-car/stream3d.glb"
+              poster="./assets/media/frames/vintage-car/frame-05.webp"
+              alt="Interactive Stream3D reconstruction of a red vintage convertible"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="1200"
+              rotation-per-second="12deg"
+              environment-image="neutral"
+              shadow-intensity="0.8"
+              exposure="1.05"
+              interaction-prompt="none"
+              touch-action="pan-y">
+              <div class="viewer-progress" slot="progress-bar"><span></span></div>
+            </model-viewer>
+            <div class="viewer-caption">
+              <span>Stream3D output</span>
+              <span class="mono">Drag to orbit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h3>Baselines</h3>
-    <ul>
-      <li><strong>Single-view:</strong> SAM&nbsp;3D, TRELLIS, TRELLIS.2.</li>
-      <li><strong>Multi-view:</strong> EscherNet, TRELLIS+M.D., TRELLIS.2+M.D.</li>
-      <li><strong>Streaming / latent-transport:</strong> KV-Cache reuse, FlowEdit, MV-SAM3D.</li>
-      <li><strong>Naive aggregation:</strong> Multi-Diffusion with <em>K</em> random views, <em>K</em> farthest-point-sampled views.</li>
-    </ul>
+    <section class="section abstract-section" id="abstract" data-section>
+      <div class="section-inner">
+        <div class="abstract-grid">
+          <div class="section-copy reveal">
+            <h2>Long streams. Constant memory.</h2>
+            <p class="lead">Stream3D treats streaming 3D generation as an evidence selection problem, not a latent transport problem.</p>
+            <p>View-conditioned 3D generators create compelling assets from a single image, yet real observations arrive as long monocular streams. Processing every frame independently creates inconsistent geometry and appearance.</p>
+            <p>Stream3D keeps the underlying generator frozen. A lightweight attention probe scores the evidence contributed by each view, then a compact token-wise memory retains only the most informative historical frames for the next generation step.</p>
+          </div>
+          <div class="abstract-points reveal reveal-delay" role="list" aria-label="Key properties">
+            <div role="listitem"><strong>Training-free</strong><span>No retraining, architecture changes, or auxiliary losses.</span></div>
+            <div role="listitem"><strong>Bounded state</strong><span>Cross-chunk memory remains O(QD), independent of stream length.</span></div>
+            <div role="listitem"><strong>Evidence-aware</strong><span>Different 3D tokens retain the historical views that support them best.</span></div>
+          </div>
+        </div>
 
-    <h3>Metrics</h3>
-    <table>
-      <tr><th class="lab" style="width:38%;">Aspect</th><th class="lab">Metrics</th></tr>
-      <tr><td class="lab"><strong>Appearance</strong></td><td class="lab">PSNR ↑, SSIM ↑, LPIPS ↓, Image FID ↓ on held-out novel views</td></tr>
-      <tr><td class="lab"><strong>Geometry</strong></td><td class="lab">PFID ↓, Chamfer Distance ↓, IoU ↑</td></tr>
-    </table>
+        <figure class="framework-figure reveal">
+          <img src="./assets/media/figures/framework.webp" width="2000" height="927" alt="Stream3D framework showing attention probes, evidence scores, adaptive evidential memory, and evidence-based multi-generation" loading="lazy">
+          <figcaption>A lightweight warmup pass extracts token-wise evidence. Top-ranked views update a fixed-capacity memory and condition the frozen 3D generator.</figcaption>
+        </figure>
+      </div>
+    </section>
 
-    <h2 style="margin-top:30px;">Main Results — GSO &amp; NAVI</h2>
-    <p>
-      Stream3D achieves the strongest overall performance on both
-      appearance and geometry metrics. The gains are consistent across all
-      metrics, indicating that improvement is not limited to image-level
-      rendering quality but also reflects better 3D structure.
-    </p>
-    <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th class="lab" rowspan="2">Data</th>
-          <th class="lab" rowspan="2">Method</th>
-          <th colspan="4">Appearance</th>
-          <th colspan="3">Geometry</th>
-        </tr>
-        <tr>
-          <th>PSNR ↑</th><th>SSIM ↑</th><th>LPIPS ↓</th><th>Image FID ↓</th>
-          <th>PFID ↓</th><th>CD ↓</th><th>IoU ↑</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td class="lab" rowspan="5">GSO</td>
-            <td class="lab">TRELLIS.2</td>
-            <td>10.563</td><td>0.822</td><td>0.210</td><td>202.808</td>
-            <td>170.726</td><td>0.156</td><td>0.480</td></tr>
-        <tr><td class="lab">TRELLIS+M.D.</td>
-            <td>10.680</td><td>0.850</td><td>0.192</td><td>245.361</td>
-            <td>122.780</td><td>0.138</td><td>0.500</td></tr>
-        <tr><td class="lab">TRELLIS.2+M.D.</td>
-            <td>10.611</td><td>0.838</td><td>0.194</td><td>228.937</td>
-            <td>176.253</td><td>0.150</td><td>0.493</td></tr>
-        <tr><td class="lab">SAM3D</td>
-            <td>14.178</td><td>0.848</td><td>0.178</td><td>105.197</td>
-            <td>71.263</td><td>0.094</td><td>0.664</td></tr>
-        <tr class="best"><td class="lab">Stream3D (Ours)</td>
-            <td>15.791</td><td>0.864</td><td>0.145</td><td>76.001</td>
-            <td>50.472</td><td>0.074</td><td>0.753</td></tr>
+    <section class="section results-section" id="results" data-section>
+      <div class="section-inner section-inner-wide">
+        <div class="section-heading reveal">
+          <h2>Interactive results</h2>
+          <p>Inspect selected real and synthetic streams as rotatable 3D assets. The filmstrip shows views observed across the sequence.</p>
+        </div>
 
-        <tr><td class="lab" rowspan="5">NAVI</td>
-            <td class="lab">TRELLIS.2</td>
-            <td>15.492</td><td>0.874</td><td>0.128</td><td>142.487</td>
-            <td>76.446</td><td>0.152</td><td>0.682</td></tr>
-        <tr><td class="lab">TRELLIS+M.D.</td>
-            <td>14.513</td><td>0.861</td><td>0.135</td><td>140.148</td>
-            <td>69.098</td><td>0.160</td><td>0.703</td></tr>
-        <tr><td class="lab">TRELLIS.2+M.D.</td>
-            <td>15.672</td><td>0.877</td><td>0.126</td><td>144.276</td>
-            <td>86.128</td><td>0.160</td><td>0.684</td></tr>
-        <tr><td class="lab">SAM3D</td>
-            <td>16.159</td><td>0.876</td><td>0.132</td><td>141.496</td>
-            <td>71.737</td><td>0.138</td><td>0.721</td></tr>
-        <tr class="best"><td class="lab">Stream3D (Ours)</td>
-            <td>16.474</td><td>0.879</td><td>0.123</td><td>134.025</td>
-            <td>62.743</td><td>0.128</td><td>0.741</td></tr>
-      </tbody>
-    </table>
-    </div>
-    <p class="footnote">
-      Bold rows mark the best result in each dataset block. Stream3D
-      consistently improves appearance and geometry over single-view and
-      multi-view generation baselines.
-    </p>
+        <div class="case-tabs" id="result-tabs" role="tablist" aria-label="Result examples"></div>
+        <div class="demo-status" id="result-status" aria-live="polite">Loading selected result...</div>
+        <div id="result-demo" class="result-demo" aria-busy="true"></div>
 
-    <h2 style="margin-top:30px;">Streaming Baseline Comparison</h2>
-    <p>
-      We compare Stream3D with several streaming alternatives, including
-      MV-SAM3D-style fixed-view selection and cache- / transport-based
-      streaming such as KV-cache reuse and FlowEdit. Random view sampling is
-      unstable; KV-caches accumulate stale evidence under long camera motion;
-      FlowEdit operates on fixed-size chunks and loses long-range history. In
-      contrast, Stream3D maintains a compact <em>persistent</em> token-level
-      evidence memory.
-    </p>
-    <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th class="lab" rowspan="2">Data</th>
-          <th class="lab" rowspan="2">Method</th>
-          <th colspan="4">Appearance</th>
-          <th colspan="3">Geometry</th>
-        </tr>
-        <tr>
-          <th>PSNR ↑</th><th>SSIM ↑</th><th>LPIPS ↓</th><th>Image FID ↓</th>
-          <th>PFID ↓</th><th>CD ↓</th><th>IoU ↑</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td class="lab" rowspan="5">GSO</td>
-            <td class="lab">MV-SAM3D, K random views</td>
-            <td>14.828</td><td>0.859</td><td>0.156</td><td>83.039</td>
-            <td>68.534</td><td>0.064</td><td>0.676</td></tr>
-        <tr><td class="lab">SAM3D + FlowEdit</td>
-            <td>14.343</td><td>0.850</td><td>0.178</td><td>98.643</td>
-            <td>76.445</td><td>0.090</td><td>0.668</td></tr>
-        <tr><td class="lab">SAM3D + KV-Cache</td>
-            <td>14.482</td><td>0.852</td><td>0.171</td><td>83.353</td>
-            <td>67.292</td><td>0.084</td><td>0.682</td></tr>
-        <tr><td class="lab">MV-SAM3D + Last Chunk</td>
-            <td>13.906</td><td>0.848</td><td>0.184</td><td>104.228</td>
-            <td>86.044</td><td>0.113</td><td>0.630</td></tr>
-        <tr class="best"><td class="lab">Stream3D (Ours, K=8)</td>
-            <td>15.791</td><td>0.864</td><td>0.145</td><td>76.001</td>
-            <td>50.472</td><td>0.074</td><td>0.753</td></tr>
-      </tbody>
-    </table>
-    </div>
+        <div class="metrics-block reveal">
+          <div class="metrics-intro">
+            <h3>Measured gains</h3>
+            <p>Stream3D improves appearance and geometry on both GSO and NAVI. Values are taken from the latest paper tables.</p>
+          </div>
+          <div class="table-wrap" tabindex="0" aria-label="Main quantitative results table">
+            <table class="metrics-table">
+              <thead>
+                <tr>
+                  <th scope="col">Dataset</th>
+                  <th scope="col">Method</th>
+                  <th scope="col">CD <span>&darr;</span></th>
+                  <th scope="col">IoU <span>&uarr;</span></th>
+                  <th scope="col">PSNR <span>&uarr;</span></th>
+                  <th scope="col">LPIPS <span>&darr;</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" rowspan="2">GSO</th><td>SAM3D</td><td>0.094</td><td>0.664</td><td>14.178</td><td>0.178</td></tr>
+                <tr class="ours-row"><td>Stream3D</td><td>0.048</td><td>0.775</td><td>16.145</td><td>0.139</td></tr>
+                <tr><th scope="row" rowspan="2">NAVI</th><td>SAM3D</td><td>0.138</td><td>0.721</td><td>16.159</td><td>0.132</td></tr>
+                <tr class="ours-row"><td>Stream3D</td><td>0.128</td><td>0.741</td><td>16.474</td><td>0.123</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <figure>
-      <img src="figures/fig5.png" alt="Qualitative results of ablation studies">
-      <figcaption>
-        <span class="figcaption-strong">Qualitative results of ablation studies.</span>
-        FlowEdit denotes SAM3D with FlowEdit; KV-Cache denotes SAM3D with
-        KV-cache reuse. MV-SAM3D denotes MV-SAM3D applied to the last input
-        chunk, while MV-SAM3D(R) denotes MV-SAM3D with <em>K</em> randomly
-        selected views.
-      </figcaption>
-    </figure>
+    <section class="section comparison-section" id="comparison" data-section>
+      <div class="section-inner section-inner-wide">
+        <div class="section-heading reveal">
+          <h2>Side-by-side comparison</h2>
+          <p>Compare the same input stream with SAM3D and Stream3D. Orbit either model to synchronize the camera across both outputs.</p>
+        </div>
 
-    <h2 style="margin-top:30px;">Ablation: Conditioning Chunk Size <em>K</em></h2>
-    <p>
-      Increasing <em>K</em> generally provides more visual evidence, but the
-      gains are not strictly monotonic. We use <em>K</em>=8 as the default,
-      balancing reconstruction quality and streaming cost; <em>K</em>=16 gives
-      the strongest overall appearance, while <em>K</em>=12 yields the best
-      geometric alignment.
-    </p>
-    <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th class="lab" rowspan="2">Data</th>
-          <th class="lab" rowspan="2">Method</th>
-          <th colspan="4">Appearance</th>
-          <th colspan="3">Geometry</th>
-        </tr>
-        <tr>
-          <th>PSNR ↑</th><th>SSIM ↑</th><th>LPIPS ↓</th><th>Image FID ↓</th>
-          <th>PFID ↓</th><th>CD ↓</th><th>IoU ↑</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td class="lab" rowspan="4">GSO</td>
-            <td class="lab">K = 4</td>
-            <td>15.724</td><td>0.861</td><td>0.148</td><td>77.544</td>
-            <td>47.516</td><td>0.064</td><td>0.754</td></tr>
-        <tr><td class="lab">K = 8 (default)</td>
-            <td>15.791</td><td>0.864</td><td>0.145</td><td>76.001</td>
-            <td>50.472</td><td>0.074</td><td>0.753</td></tr>
-        <tr><td class="lab">K = 12</td>
-            <td>15.663</td><td>0.860</td><td>0.150</td><td>75.547</td>
-            <td>44.682</td><td>0.060</td><td>0.754</td></tr>
-        <tr><td class="lab">K = 16</td>
-            <td>15.912</td><td>0.864</td><td>0.144</td><td>71.449</td>
-            <td>45.251</td><td>0.064</td><td>0.764</td></tr>
-      </tbody>
-    </table>
-    </div>
+        <div class="case-tabs" id="comparison-tabs" role="tablist" aria-label="Comparison examples"></div>
+        <div class="demo-status" id="comparison-status" aria-live="polite">Loading selected comparison...</div>
+        <div id="comparison-demo" class="comparison-demo" aria-busy="true"></div>
+      </div>
+    </section>
 
-    <figure>
-      <img src="figures/fig4.png" alt="Additional qualitative results">
-      <figcaption>
-        <span class="figcaption-strong">Additional qualitative comparisons.</span>
-        Stream3D yields more temporally consistent geometry and texture
-        across long monocular streams, while baselines either oversmooth
-        unobserved regions or accumulate cross-chunk drift.
-      </figcaption>
-    </figure>
-  </div>
-</section>
+    <section class="section memory-section" id="memory" data-section>
+      <div class="section-inner">
+        <div class="memory-layout">
+          <div class="memory-copy reveal">
+            <h2>Memory that does not grow with time</h2>
+            <p class="lead">Stream3D stores evidence scores and frame indices, not an ever-growing history of latent activations.</p>
+            <p>For each query token, two Q by D matrices retain the top-D evidence values and their source frame indices. New views can replace weaker evidence, while frames that never enter any token list are discarded.</p>
+            <p class="property-note">The cached evidence at every token and rank is monotonically non-decreasing. This is an evidence-space property, not a claim that every generated sample must improve monotonically.</p>
+          </div>
 
-<section id="bibtex">
-  <div class="container">
-    <h2>BibTeX</h2>
-<pre><code>@misc{zhou2026stream3d,
+          <div class="scaling-figure reveal reveal-delay" role="img" aria-label="Conceptual scaling chart showing latent transport growing with stream length while Stream3D stays constant at O of QD">
+            <div class="scaling-title">Cross-chunk state</div>
+            <div class="scaling-chart">
+              <span class="axis-y">state size</span>
+              <span class="axis-x">stream length T</span>
+              <span class="transport-line"></span>
+              <span class="stream-line"></span>
+              <span class="transport-label">Latent history grows with T</span>
+              <span class="stream-label">Stream3D O(QD)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="memory-flow reveal" aria-label="Evidential memory update illustration">
+          <div class="memory-incoming">
+            <span class="flow-label">Incoming views</span>
+            <div class="memory-frame-row" aria-hidden="true">
+              <img src="./assets/media/frames/mario/frame-00.webp" alt="">
+              <img src="./assets/media/frames/mario/frame-02.webp" alt="">
+              <img src="./assets/media/frames/mario/frame-04.webp" alt="">
+              <img src="./assets/media/frames/mario/frame-06.webp" alt="">
+              <img src="./assets/media/frames/mario/frame-08.webp" alt="">
+              <img src="./assets/media/frames/mario/frame-10.webp" alt="">
+            </div>
+          </div>
+          <span class="flow-arrow" aria-hidden="true"></span>
+          <div class="memory-slots">
+            <span class="flow-label">Retained evidence</span>
+            <div class="slot-row" aria-hidden="true">
+              <span style="--slot: .95"></span>
+              <span style="--slot: .82"></span>
+              <span style="--slot: .68"></span>
+              <span style="--slot: .53"></span>
+              <span style="--slot: .37"></span>
+            </div>
+            <small class="mono">2 x Q x D scalars</small>
+          </div>
+        </div>
+
+        <figure class="memory-progression reveal">
+          <img src="./assets/media/figures/memory-progression.webp" width="2000" height="729" alt="Evidence memory and generated 3D mesh improving from chunk 0 to chunk 12" loading="lazy">
+          <figcaption>As stronger evidence arrives, retained views change and the reconstructed asset becomes more complete.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section method-section" id="method" data-section>
+      <div class="section-inner">
+        <div class="section-heading reveal">
+          <h2>How evidential memory works</h2>
+          <p>Each chunk adds one inexpensive probe, one bounded memory update, and one full generation pass through the unchanged backbone.</p>
+        </div>
+
+        <div class="method-steps reveal" role="list">
+          <article role="listitem">
+            <h3>Score evidence</h3>
+            <p>A frozen-prior warmup step reads cross-attention. Strong, selective attention marks a view as useful evidence for a query token.</p>
+            <code>mass x (1 - entropy)</code>
+          </article>
+          <article role="listitem">
+            <h3>Update memory</h3>
+            <p>Each token merges new candidates with its historical top-D list. Weak or redundant frames leave the fixed-capacity state.</p>
+            <code>M, F in R^(Q x D)</code>
+          </article>
+          <article role="listitem">
+            <h3>Generate from selected views</h3>
+            <p>Token ownership votes select the top-K frames. Evidence-weighted multi-view fusion updates a shared 3D latent.</p>
+            <code>top-K ownership votes</code>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section citation-section" id="citation" data-section>
+      <div class="section-inner citation-layout">
+        <div class="citation-copy reveal">
+          <h2>Citation</h2>
+          <p>Please cite the preprint if Stream3D supports your research.</p>
+        </div>
+        <div class="citation-code reveal reveal-delay">
+          <button type="button" class="copy-button" data-copy-citation>Copy BibTeX</button>
+          <pre><code id="bibtex">@misc{zhou2026stream3d,
   title  = {{Stream3D}: Sequential Multi-View 3D Generation via Evidential Memory},
-  author = {Zhou, Kaichen and Bai, Zeyang and Chang, Xinhai and Wang, Mengyu and Liang, Paul and Zhan, Fangneng},
-  year   = {2026}
+  author = {Kaichen Zhou and Zeyang Bai and Xinhai Chang and
+            Mengyu Wang and Paul Pu Liang and Fangneng Zhan},
+  year   = {2026},
+  note   = {Preprint},
+  url    = {https://stream-3d.github.io/stream3d.github.io/}
 }</code></pre>
-  </div>
-</section>
+          <p class="copy-status" aria-live="polite" data-copy-status></p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-<footer>
-  &copy; 2026 Stream3D Authors.
-</footer>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a class="brand" href="#home">Stream3D</a>
+      <p>Sequential multi-view 3D generation via evidential memory.</p>
+      <p>&copy; 2026 Stream3D authors.</p>
+    </div>
+  </footer>
 </body>
 </html>
