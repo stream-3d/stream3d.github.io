@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Stream3D">
+  <style>
+    .stream-back { stroke: #275E62; }
+    .stream-front { stroke: #0A989C; }
+    .cube-face { stroke: #0D2528; }
+    @media (prefers-color-scheme: dark) {
+      .stream-back { stroke: #6EA9AC; }
+      .stream-front { stroke: #4ED5D4; }
+      .cube-face { stroke: #EDF9F9; }
+    }
+  </style>
+  <path class="stream-back" d="M5.5 41 22 31.5 38.5 41 22 50.5Z" fill="none" stroke-width="3.4" stroke-linejoin="round"/>
+  <path class="stream-front" d="M12 33 28.5 23.5 45 33 28.5 42.5Z" fill="none" stroke-width="3.4" stroke-linejoin="round"/>
+  <path class="cube-face" d="m24 19.5 16-9 16 9-16 9Z" fill="#F6F7F9" stroke-width="2.2" stroke-linejoin="round"/>
+  <path class="cube-face" d="M24 19.5v18L40 47V28.5Z" fill="#087B80" stroke-width="2.2" stroke-linejoin="round"/>
+  <path class="cube-face" d="M40 28.5V47l16-9.5v-18Z" fill="#63CFCE" stroke-width="2.2" stroke-linejoin="round"/>
+</svg>
