@@ -211,15 +211,55 @@
             <p class="property-note">The cached evidence at every token and rank is monotonically non-decreasing. This is an evidence-space property, not a claim that every generated sample must improve monotonically.</p>
           </div>
 
-          <div class="scaling-figure reveal reveal-delay" role="img" aria-label="Conceptual scaling chart showing latent transport growing with stream length while Stream3D stays constant at O of QD">
-            <div class="scaling-title">Cross-chunk state</div>
+          <div class="scaling-figure reveal reveal-delay" role="img" aria-label="Conceptual scaling chart showing latent transport growing with stream length while Stream3D stays constant at two Q D scalars">
+            <div class="scaling-head">
+              <div>
+                <span class="scaling-eyebrow">Memory footprint</span>
+                <h3>Cross-chunk state</h3>
+              </div>
+              <span class="scaling-constant">Constant in \(T\)</span>
+            </div>
             <div class="scaling-chart">
-              <span class="axis-y">state size</span>
-              <span class="axis-x">stream length \(T\)</span>
-              <span class="transport-line"></span>
-              <span class="stream-line"></span>
-              <span class="transport-label">Latent history grows with \(T\)</span>
-              <span class="stream-label">Stream3D \(\mathcal{O}(QD)\)</span>
+              <svg viewBox="0 0 520 286" aria-hidden="true" focusable="false">
+                <g class="chart-grid">
+                  <line x1="60" y1="42" x2="478" y2="42"></line>
+                  <line x1="60" y1="104" x2="478" y2="104"></line>
+                  <line x1="60" y1="166" x2="478" y2="166"></line>
+                  <line x1="60" y1="228" x2="478" y2="228"></line>
+                  <line x1="60" y1="28" x2="60" y2="228"></line>
+                  <line x1="60" y1="228" x2="490" y2="228"></line>
+                </g>
+                <path class="chart-area" d="M60 218 C150 195 226 160 304 118 C370 82 426 55 478 36 L478 228 L60 228 Z"></path>
+                <path class="chart-latent" d="M60 218 C150 195 226 160 304 118 C370 82 426 55 478 36"></path>
+                <path class="chart-stream" d="M60 174 L478 174"></path>
+                <g class="chart-latent-points">
+                  <circle cx="60" cy="218" r="3.5"></circle>
+                  <circle cx="164" cy="189" r="3.5"></circle>
+                  <circle cx="269" cy="139" r="3.5"></circle>
+                  <circle cx="373" cy="80" r="3.5"></circle>
+                  <circle cx="478" cy="36" r="3.5"></circle>
+                </g>
+                <g class="chart-stream-points">
+                  <circle cx="60" cy="174" r="4"></circle>
+                  <circle cx="164" cy="174" r="4"></circle>
+                  <circle cx="269" cy="174" r="4"></circle>
+                  <circle cx="373" cy="174" r="4"></circle>
+                  <circle cx="478" cy="174" r="4"></circle>
+                </g>
+                <g class="chart-labels">
+                  <text x="60" y="250" text-anchor="middle">1</text>
+                  <text x="164" y="250" text-anchor="middle">4</text>
+                  <text x="269" y="250" text-anchor="middle">8</text>
+                  <text x="373" y="250" text-anchor="middle">12</text>
+                  <text x="478" y="250" text-anchor="middle">T</text>
+                  <text x="60" y="274">observed chunks</text>
+                  <text x="10" y="32">state size</text>
+                </g>
+              </svg>
+              <div class="chart-legend" aria-hidden="true">
+                <span><i class="legend-line legend-line-latent"></i><span><strong>Latent transport</strong><small>state accumulates</small></span></span>
+                <span><i class="legend-line legend-line-stream"></i><span><strong>Stream3D</strong><small>\(2QD\) scalars</small></span></span>
+              </div>
             </div>
           </div>
         </div>
@@ -264,63 +304,54 @@
       <div class="section-inner">
         <div class="method-layout">
           <div class="method-intro reveal">
-            <div class="method-intro-sticky">
-              <h2>How evidential memory works</h2>
-              <p>Each chunk adds one inexpensive probe, one bounded memory update, and one full generation pass through the unchanged backbone.</p>
-              <dl class="method-facts">
-                <div><dt>Generator</dt><dd>Frozen</dd></div>
-                <div><dt>Learned parameters</dt><dd>None</dd></div>
-                <div><dt>Cross-chunk state</dt><dd>\(\mathcal{O}(QD)\)</dd></div>
-              </dl>
-            </div>
+            <span class="section-kicker">Method at a glance</span>
+            <h2>How evidential memory works</h2>
+            <p>Probe which views matter, retain the strongest token-wise evidence, then let the frozen generator use the selected bundle.</p>
           </div>
 
           <div class="method-steps reveal reveal-delay" role="list">
             <article role="listitem">
               <div class="method-step-label"><span>01</span><span>Probe</span></div>
               <h3>Score evidence</h3>
-              <p>A frozen-prior warmup step reads cross-attention. Low entropy indicates that a view provides concentrated evidence for a query token.</p>
+              <p>Strong, selective cross-attention indicates that view \(v\) supports query token \(q\).</p>
               <div class="math-display">
                 \[
-                  \mathbf{H}_v[q] = -\frac{1}{\log P}
-                  \sum_{i=1}^{P}\widetilde{\mathbf{A}}_v[q,i]
-                  \log \widetilde{\mathbf{A}}_v[q,i]
+                  \mathbf{M}_v[q] \propto
+                  \operatorname{strength}_v[q]\,
+                  \bigl(1-\mathbf{H}_v[q]\bigr)
                 \]
               </div>
-              <p class="formula-caption">Attention mass rewards relevance; \(1-\mathbf{H}_v[q]\) rewards selectivity.</p>
+              <p class="formula-caption">Attention strength times selectivity.</p>
             </article>
 
             <article role="listitem">
               <div class="method-step-label"><span>02</span><span>Retain</span></div>
-              <h3>Update bounded memory</h3>
-              <p>Each token merges new candidates with its historical top-\(D\) list. Weak or redundant views leave the fixed-capacity state immediately.</p>
+              <h3>Keep the top evidence</h3>
+              <p>Each token keeps only its top-\(D\) scores and the corresponding source-frame indices.</p>
               <div class="math-display">
                 \[
                   \mathbf{M},\mathbf{F}\in\mathbb{R}^{Q\times D},
-                  \qquad |\text{state}| = 2QD = \mathcal{O}(QD)
+                  \qquad |\text{state}|=2QD
                 \]
               </div>
-              <p class="formula-caption">Evidence values and frame indices stay bounded independently of stream length \(T\).</p>
+              <p class="formula-caption">Fixed capacity, independent of stream length.</p>
             </article>
 
             <article role="listitem">
-              <div class="method-step-label"><span>03</span><span>Generate</span></div>
-              <h3>Select views and fuse</h3>
-              <p>Token ownership votes select the top-\(K\) conditioning frames. Their normalized evidence weights fuse per-view velocities in the shared 3D latent.</p>
-              <div class="math-display math-display-stack">
+              <div class="method-step-label"><span>03</span><span>Select</span></div>
+              <h3>Vote for views</h3>
+              <p>Token ownership counts rank historical frames; the top-\(K\) become the next conditioning bundle.</p>
+              <div class="math-display">
                 \[
-                  n_{f_r}=\left|\{(q,j):\mathbf{F}[q,j]=f_r\}\right|,
-                  \qquad \mathcal{V}^{\star}=\operatorname{TopK}_{f_r}\,n_{f_r}
-                \]
-                \[
-                  \overline{V}_{\theta}(z_t)[q] =
-                  \sum_{v\in\mathcal{V}^{\star}}\overline{M}_v[q]\,
-                  V_{\theta}(z_t,v)[q]
+                  n_f=\bigl|\{(q,j):\mathbf{F}[q,j]=f\}\bigr|,
+                  \quad \mathcal{V}^{\star}=\operatorname{TopK}_{f}\,n_f
                 \]
               </div>
-              <p class="formula-caption">The underlying view-conditioned generator remains unchanged.</p>
+              <p class="formula-caption">The frozen generator consumes only the selected views.</p>
             </article>
           </div>
+
+          <p class="method-note">The exact evidence score, fusion rule, and streaming algorithm are detailed in the <a href="https://arxiv.org/abs/2605.21472" target="_blank" rel="noreferrer">paper</a>.</p>
         </div>
       </div>
     </section>
