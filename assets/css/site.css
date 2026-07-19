@@ -3612,3 +3612,73 @@ figcaption {
     font-size: 7px;
   }
 }
+
+/* Keep gallery choices subordinate to the 3D evidence and on one compact row. */
+.case-tabs {
+  display: grid;
+  width: 100%;
+  max-width: none;
+  margin: 24px 0 0;
+  gap: 8px;
+  padding: 0;
+  overflow: visible;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.case-tabs button,
+.case-tabs [role="tab"] {
+  min-width: 0;
+  min-height: 58px;
+  padding: 6px;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 9px;
+  border-radius: 4px;
+}
+
+.case-tab-preview {
+  width: 54px;
+  aspect-ratio: 4 / 3;
+  align-self: center;
+}
+
+.case-tab-copy {
+  gap: 3px;
+}
+
+.case-tab-title {
+  font-size: 11px;
+  line-height: 1.22;
+}
+
+.case-tab-dataset {
+  font-size: 7px;
+  line-height: 1.25;
+}
+
+@media (max-width: 760px) {
+  .case-tabs {
+    display: flex;
+    width: calc(100% + var(--page-gutter));
+    margin-top: 20px;
+    gap: 8px;
+    padding: 0 var(--page-gutter) 8px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-padding-inline: 0 var(--page-gutter);
+    scroll-snap-type: inline proximity;
+  }
+
+  .case-tabs button,
+  .case-tabs [role="tab"] {
+    min-width: 184px;
+    min-height: 56px;
+    flex: 0 0 184px;
+    padding: 6px;
+    grid-template-columns: 52px minmax(0, 1fr);
+    scroll-snap-align: start;
+  }
+
+  .case-tab-preview {
+    width: 52px;
+  }
+}
