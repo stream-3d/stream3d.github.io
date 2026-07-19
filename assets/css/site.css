@@ -3682,3 +3682,51 @@ figcaption {
     width: 52px;
   }
 }
+
+#result-tabs {
+  width: min(100%, 760px);
+  margin-right: auto;
+  margin-left: auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#comparison-tabs {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
+.comparison-demo-grid.comparison-model-only {
+  width: min(100%, 920px);
+  margin-inline: auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 761px) and (max-width: 1180px) {
+  #comparison-tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: inline proximity;
+  }
+
+  #comparison-tabs [role="tab"] {
+    min-width: 184px;
+    flex: 0 0 184px;
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 760px) {
+  #result-tabs,
+  #comparison-tabs {
+    width: calc(100% + var(--page-gutter));
+    max-width: none;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .comparison-demo-grid.comparison-model-only {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,15 +1,70 @@
 {
   "results": [
     {
+      "id": "seated-statue",
+      "title": "Seated stone statue",
+      "dataset": "DL3DV",
+      "description": "A long outdoor orbit around a carved seated figure, with fine surface relief, self-occlusion, and changing background context.",
+      "thumbnail": "./assets/media/frames/seated-statue/frame-06.png",
+      "totalFrames": 272,
+      "framePositions": [
+        1,
+        24,
+        50,
+        74,
+        99,
+        123,
+        149,
+        173,
+        198,
+        222,
+        248,
+        272
+      ],
+      "leftLabel": "SAM3D",
+      "rightLabel": "Stream3D",
+      "frames": [
+        "./assets/media/frames/seated-statue/frame-00.png",
+        "./assets/media/frames/seated-statue/frame-01.png",
+        "./assets/media/frames/seated-statue/frame-02.png",
+        "./assets/media/frames/seated-statue/frame-03.png",
+        "./assets/media/frames/seated-statue/frame-04.png",
+        "./assets/media/frames/seated-statue/frame-05.png",
+        "./assets/media/frames/seated-statue/frame-06.png",
+        "./assets/media/frames/seated-statue/frame-07.png",
+        "./assets/media/frames/seated-statue/frame-08.png",
+        "./assets/media/frames/seated-statue/frame-09.png",
+        "./assets/media/frames/seated-statue/frame-10.png",
+        "./assets/media/frames/seated-statue/frame-11.png"
+      ],
+      "models": {
+        "sam3d": "./assets/media/models/seated-statue/sam3d.glb",
+        "stream3d": "./assets/media/models/seated-statue/stream3d.glb"
+      }
+    },
+    {
       "id": "vintage-car",
       "title": "Vintage convertible",
       "dataset": "DL3DV",
       "description": "A long real-world orbit with reflective paint, thin wheel geometry, and repeated occlusion.",
       "thumbnail": "./assets/media/frames/vintage-car/frame-03.webp",
       "totalFrames": 344,
-      "framePositions": [1, 31, 63, 93, 126, 156, 188, 218, 251, 281, 313, 344],
+      "framePositions": [
+        1,
+        31,
+        63,
+        93,
+        126,
+        156,
+        188,
+        218,
+        251,
+        281,
+        313,
+        344
+      ],
       "leftType": "stream",
-      "leftLabel": "Input stream",
+      "leftLabel": "SAM3D",
       "rightLabel": "Stream3D",
       "frames": [
         "./assets/media/frames/vintage-car/frame-00.webp",
@@ -26,6 +81,7 @@
         "./assets/media/frames/vintage-car/frame-11.webp"
       ],
       "models": {
+        "sam3d": "./assets/media/models/vintage-car/sam3d.glb",
         "stream3d": "./assets/media/models/vintage-car/stream3d.glb"
       }
     },
@@ -33,12 +89,25 @@
       "id": "pastel-castle",
       "title": "Pastel castle ride",
       "dataset": "DL3DV",
-      "description": "A compact 50-view sequence with fine towers, layered silhouettes, and saturated surface detail.",
+      "description": "A compact 64-view sequence with fine towers, layered silhouettes, and saturated surface detail.",
       "thumbnail": "./assets/media/frames/pastel-castle/frame-07.webp",
-      "totalFrames": 50,
-      "framePositions": [1, 5, 10, 14, 19, 23, 28, 32, 37, 41, 46, 50],
+      "totalFrames": 64,
+      "framePositions": [
+        1,
+        7,
+        12,
+        18,
+        24,
+        30,
+        35,
+        41,
+        47,
+        53,
+        58,
+        64
+      ],
       "leftType": "stream",
-      "leftLabel": "Input stream",
+      "leftLabel": "SAM3D",
       "rightLabel": "Stream3D",
       "frames": [
         "./assets/media/frames/pastel-castle/frame-00.webp",
@@ -55,96 +124,8 @@
         "./assets/media/frames/pastel-castle/frame-11.webp"
       ],
       "models": {
+        "sam3d": "./assets/media/models/pastel-castle/sam3d.glb",
         "stream3d": "./assets/media/models/pastel-castle/stream3d.glb"
-      }
-    },
-    {
-      "id": "cannon",
-      "title": "Antique field cannon",
-      "dataset": "DL3DV",
-      "description": "A 311-view outdoor orbit testing thin wheel spokes, long support rails, dark materials, and severe self-occlusion.",
-      "thumbnail": "./assets/media/frames/cannon/frame-03.jpg",
-      "totalFrames": 311,
-      "framePositions": [1, 29, 57, 85, 113, 141, 170, 198, 226, 254, 282, 311],
-      "leftType": "stream",
-      "leftLabel": "Input stream",
-      "rightLabel": "Stream3D",
-      "frames": [
-        "./assets/media/frames/cannon/frame-00.jpg",
-        "./assets/media/frames/cannon/frame-01.jpg",
-        "./assets/media/frames/cannon/frame-02.jpg",
-        "./assets/media/frames/cannon/frame-03.jpg",
-        "./assets/media/frames/cannon/frame-04.jpg",
-        "./assets/media/frames/cannon/frame-05.jpg",
-        "./assets/media/frames/cannon/frame-06.jpg",
-        "./assets/media/frames/cannon/frame-07.jpg",
-        "./assets/media/frames/cannon/frame-08.jpg",
-        "./assets/media/frames/cannon/frame-09.jpg",
-        "./assets/media/frames/cannon/frame-10.jpg",
-        "./assets/media/frames/cannon/frame-11.jpg"
-      ],
-      "models": {
-        "stream3d": "./assets/media/models/cannon/stream3d.glb"
-      }
-    },
-    {
-      "id": "leather",
-      "title": "Leather loafer",
-      "dataset": "GSO",
-      "description": "Ground-truth comparison on a dark leather shoe with a smooth upper, layered sole, and subtle material boundaries.",
-      "thumbnail": "./assets/media/frames/leather/frame-04.jpg",
-      "totalFrames": 100,
-      "framePositions": [1, 10, 19, 28, 37, 46, 55, 64, 73, 82, 91, 100],
-      "leftType": "model",
-      "leftLabel": "Ground truth",
-      "rightLabel": "Stream3D",
-      "frames": [
-        "./assets/media/frames/leather/frame-00.jpg",
-        "./assets/media/frames/leather/frame-01.jpg",
-        "./assets/media/frames/leather/frame-02.jpg",
-        "./assets/media/frames/leather/frame-03.jpg",
-        "./assets/media/frames/leather/frame-04.jpg",
-        "./assets/media/frames/leather/frame-05.jpg",
-        "./assets/media/frames/leather/frame-06.jpg",
-        "./assets/media/frames/leather/frame-07.jpg",
-        "./assets/media/frames/leather/frame-08.jpg",
-        "./assets/media/frames/leather/frame-09.jpg",
-        "./assets/media/frames/leather/frame-10.jpg",
-        "./assets/media/frames/leather/frame-11.jpg"
-      ],
-      "models": {
-        "gt": "./assets/media/models/leather/gt.glb",
-        "stream3d": "./assets/media/models/leather/stream3d.glb"
-      }
-    },
-    {
-      "id": "mario",
-      "title": "Mario figure",
-      "dataset": "GSO",
-      "description": "Ground-truth comparison on a recognizable object with articulated limbs and high-frequency color boundaries.",
-      "thumbnail": "./assets/media/frames/mario/frame-04.webp",
-      "totalFrames": 100,
-      "framePositions": [1, 10, 19, 28, 37, 46, 55, 64, 73, 82, 91, 100],
-      "leftType": "model",
-      "leftLabel": "Ground truth",
-      "rightLabel": "Stream3D",
-      "frames": [
-        "./assets/media/frames/mario/frame-00.webp",
-        "./assets/media/frames/mario/frame-01.webp",
-        "./assets/media/frames/mario/frame-02.webp",
-        "./assets/media/frames/mario/frame-03.webp",
-        "./assets/media/frames/mario/frame-04.webp",
-        "./assets/media/frames/mario/frame-05.webp",
-        "./assets/media/frames/mario/frame-06.webp",
-        "./assets/media/frames/mario/frame-07.webp",
-        "./assets/media/frames/mario/frame-08.webp",
-        "./assets/media/frames/mario/frame-09.webp",
-        "./assets/media/frames/mario/frame-10.webp",
-        "./assets/media/frames/mario/frame-11.webp"
-      ],
-      "models": {
-        "gt": "./assets/media/models/mario/gt.glb",
-        "stream3d": "./assets/media/models/mario/stream3d.glb"
       }
     }
   ],
@@ -155,7 +136,20 @@
       "dataset": "DL3DV",
       "thumbnail": "./assets/media/frames/winged-statue/frame-06.jpg",
       "totalFrames": 346,
-      "framePositions": [1, 32, 63, 95, 126, 157, 189, 220, 251, 283, 314, 346],
+      "framePositions": [
+        1,
+        32,
+        63,
+        95,
+        126,
+        157,
+        189,
+        220,
+        251,
+        283,
+        314,
+        346
+      ],
       "frames": [
         "./assets/media/frames/winged-statue/frame-00.jpg",
         "./assets/media/frames/winged-statue/frame-01.jpg",
@@ -176,12 +170,168 @@
       }
     },
     {
+      "id": "cannon",
+      "title": "Antique field cannon",
+      "dataset": "DL3DV",
+      "description": "A 311-view outdoor orbit testing thin wheel spokes, long support rails, dark materials, and severe self-occlusion.",
+      "thumbnail": "./assets/media/frames/cannon/frame-03.jpg",
+      "totalFrames": 311,
+      "framePositions": [
+        1,
+        29,
+        57,
+        85,
+        113,
+        141,
+        170,
+        198,
+        226,
+        254,
+        282,
+        311
+      ],
+      "leftType": "stream",
+      "leftLabel": "Input stream",
+      "rightLabel": "Stream3D",
+      "frames": [
+        "./assets/media/frames/cannon/frame-00.jpg",
+        "./assets/media/frames/cannon/frame-01.jpg",
+        "./assets/media/frames/cannon/frame-02.jpg",
+        "./assets/media/frames/cannon/frame-03.jpg",
+        "./assets/media/frames/cannon/frame-04.jpg",
+        "./assets/media/frames/cannon/frame-05.jpg",
+        "./assets/media/frames/cannon/frame-06.jpg",
+        "./assets/media/frames/cannon/frame-07.jpg",
+        "./assets/media/frames/cannon/frame-08.jpg",
+        "./assets/media/frames/cannon/frame-09.jpg",
+        "./assets/media/frames/cannon/frame-10.jpg",
+        "./assets/media/frames/cannon/frame-11.jpg"
+      ],
+      "models": {
+        "sam3d": "./assets/media/models/cannon/sam3d.glb",
+        "stream3d": "./assets/media/models/cannon/stream3d.glb"
+      }
+    },
+    {
+      "id": "scan24",
+      "title": "DTU scan 24",
+      "dataset": "DTU",
+      "description": "A controlled multi-view scan with thin structures and strong geometric detail.",
+      "thumbnail": "./assets/media/frames/scan24/preview.png",
+      "totalFrames": 0,
+      "framePositions": [],
+      "frames": [],
+      "models": {
+        "sam3d": "./assets/media/models/scan24/sam3d.glb",
+        "stream3d": "./assets/media/models/scan24/stream3d.glb"
+      }
+    },
+    {
+      "id": "leather",
+      "title": "Leather loafer",
+      "dataset": "GSO",
+      "description": "Ground-truth comparison on a dark leather shoe with a smooth upper, layered sole, and subtle material boundaries.",
+      "thumbnail": "./assets/media/frames/leather/frame-04.jpg",
+      "totalFrames": 100,
+      "framePositions": [
+        1,
+        10,
+        19,
+        28,
+        37,
+        46,
+        55,
+        64,
+        73,
+        82,
+        91,
+        100
+      ],
+      "leftType": "model",
+      "leftLabel": "Ground truth",
+      "rightLabel": "Stream3D",
+      "frames": [
+        "./assets/media/frames/leather/frame-00.jpg",
+        "./assets/media/frames/leather/frame-01.jpg",
+        "./assets/media/frames/leather/frame-02.jpg",
+        "./assets/media/frames/leather/frame-03.jpg",
+        "./assets/media/frames/leather/frame-04.jpg",
+        "./assets/media/frames/leather/frame-05.jpg",
+        "./assets/media/frames/leather/frame-06.jpg",
+        "./assets/media/frames/leather/frame-07.jpg",
+        "./assets/media/frames/leather/frame-08.jpg",
+        "./assets/media/frames/leather/frame-09.jpg",
+        "./assets/media/frames/leather/frame-10.jpg",
+        "./assets/media/frames/leather/frame-11.jpg"
+      ],
+      "models": {
+        "sam3d": "./assets/media/models/leather/sam3d.glb",
+        "stream3d": "./assets/media/models/leather/stream3d.glb"
+      }
+    },
+    {
+      "id": "mario",
+      "title": "Mario figure",
+      "dataset": "GSO",
+      "description": "Ground-truth comparison on a recognizable object with articulated limbs and high-frequency color boundaries.",
+      "thumbnail": "./assets/media/frames/mario/frame-04.webp",
+      "totalFrames": 100,
+      "framePositions": [
+        1,
+        10,
+        19,
+        28,
+        37,
+        46,
+        55,
+        64,
+        73,
+        82,
+        91,
+        100
+      ],
+      "leftType": "model",
+      "leftLabel": "Ground truth",
+      "rightLabel": "Stream3D",
+      "frames": [
+        "./assets/media/frames/mario/frame-00.webp",
+        "./assets/media/frames/mario/frame-01.webp",
+        "./assets/media/frames/mario/frame-02.webp",
+        "./assets/media/frames/mario/frame-03.webp",
+        "./assets/media/frames/mario/frame-04.webp",
+        "./assets/media/frames/mario/frame-05.webp",
+        "./assets/media/frames/mario/frame-06.webp",
+        "./assets/media/frames/mario/frame-07.webp",
+        "./assets/media/frames/mario/frame-08.webp",
+        "./assets/media/frames/mario/frame-09.webp",
+        "./assets/media/frames/mario/frame-10.webp",
+        "./assets/media/frames/mario/frame-11.webp"
+      ],
+      "models": {
+        "sam3d": "./assets/media/models/mario/sam3d.glb",
+        "stream3d": "./assets/media/models/mario/stream3d.glb"
+      }
+    },
+    {
       "id": "elephant",
       "title": "Elephant plush",
       "dataset": "GSO",
       "thumbnail": "./assets/media/frames/elephant/frame-04.webp",
       "totalFrames": 100,
-      "framePositions": [1, 10, 19, 28, 37, 46, 55, 64, 73, 82, 91, 100],
+      "framePositions": [
+        1,
+        10,
+        19,
+        28,
+        37,
+        46,
+        55,
+        64,
+        73,
+        82,
+        91,
+        100
+      ],
       "frames": [
         "./assets/media/frames/elephant/frame-00.webp",
         "./assets/media/frames/elephant/frame-01.webp",
@@ -207,7 +357,20 @@
       "dataset": "DL3DV",
       "thumbnail": "./assets/media/frames/tiger/frame-04.webp",
       "totalFrames": 307,
-      "framePositions": [1, 27, 56, 83, 112, 139, 168, 195, 224, 251, 280, 307],
+      "framePositions": [
+        1,
+        27,
+        56,
+        83,
+        112,
+        139,
+        168,
+        195,
+        224,
+        251,
+        280,
+        307
+      ],
       "frames": [
         "./assets/media/frames/tiger/frame-00.webp",
         "./assets/media/frames/tiger/frame-01.webp",
@@ -233,7 +396,20 @@
       "dataset": "GSO",
       "thumbnail": "./assets/media/frames/teapot/frame-04.jpg",
       "totalFrames": 100,
-      "framePositions": [1, 10, 19, 28, 37, 46, 55, 64, 73, 82, 91, 100],
+      "framePositions": [
+        1,
+        10,
+        19,
+        28,
+        37,
+        46,
+        55,
+        64,
+        73,
+        82,
+        91,
+        100
+      ],
       "frames": [
         "./assets/media/frames/teapot/frame-00.jpg",
         "./assets/media/frames/teapot/frame-01.jpg",
@@ -251,32 +427,6 @@
       "models": {
         "sam3d": "./assets/media/models/teapot/sam3d.glb",
         "stream3d": "./assets/media/models/teapot/stream3d.glb"
-      }
-    },
-    {
-      "id": "colored-box",
-      "title": "Colored storage box",
-      "dataset": "NAVI",
-      "thumbnail": "./assets/media/frames/colored-box/frame-04.jpg",
-      "totalFrames": 193,
-      "framePositions": [1, 18, 35, 53, 70, 88, 105, 123, 140, 158, 175, 193],
-      "frames": [
-        "./assets/media/frames/colored-box/frame-00.jpg",
-        "./assets/media/frames/colored-box/frame-01.jpg",
-        "./assets/media/frames/colored-box/frame-02.jpg",
-        "./assets/media/frames/colored-box/frame-03.jpg",
-        "./assets/media/frames/colored-box/frame-04.jpg",
-        "./assets/media/frames/colored-box/frame-05.jpg",
-        "./assets/media/frames/colored-box/frame-06.jpg",
-        "./assets/media/frames/colored-box/frame-07.jpg",
-        "./assets/media/frames/colored-box/frame-08.jpg",
-        "./assets/media/frames/colored-box/frame-09.jpg",
-        "./assets/media/frames/colored-box/frame-10.jpg",
-        "./assets/media/frames/colored-box/frame-11.jpg"
-      ],
-      "models": {
-        "sam3d": "./assets/media/models/colored-box/sam3d.glb",
-        "stream3d": "./assets/media/models/colored-box/stream3d.glb"
       }
     }
   ]

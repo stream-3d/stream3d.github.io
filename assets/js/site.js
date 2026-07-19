@@ -1,4 +1,4 @@
-const EXAMPLES_URL = "./assets/data/examples.json";
+const EXAMPLES_URL = "./assets/data/examples.json?v=20260719-gallery-3";
 const FRAME_INTERVAL_MS = 900;
 const VIEWER_DEFINITION_TIMEOUT_MS = 15000;
 
@@ -144,6 +144,7 @@ async function loadExamples() {
 
   try {
     const response = await fetch(EXAMPLES_URL, {
+      cache: "no-store",
       headers: { Accept: "application/json" },
     });
 
@@ -564,6 +565,8 @@ function createModelPanel(item, label, source, poster) {
       "environment-image": "neutral",
       "shadow-intensity": "0.8",
       exposure: "1.05",
+      "camera-orbit": "0deg 75deg auto",
+      "camera-target": "auto auto auto",
       "interaction-prompt": "none",
       loading: "lazy",
       reveal: "auto",
@@ -741,6 +744,33 @@ function synchronizeCameras(viewers) {
 
   let syncing = false;
   let releaseFrame = null;
+  let initialCameraAligned = false;
+
+  const alignInitialCamera = () => {
+    if (
+      initialCameraAligned
+      || !availableViewers.every((viewer) => viewer.dataset.loadState === "loaded")
+    ) return;
+
+    const source = availableViewers[0];
+    if (typeof source.getCameraOrbit !== "function") return;
+
+    try {
+      const orbit = source.getCameraOrbit();
+      availableViewers.slice(1).forEach((target) => {
+        target.cameraOrbit = `${orbit.theta}rad ${orbit.phi}rad auto`;
+        target.cameraTarget = "auto auto auto";
+        if (typeof source.getFieldOfView === "function") {
+          target.fieldOfView = `${source.getFieldOfView()}deg`;
+        }
+        if (typeof target.jumpCameraToGoal === "function") target.jumpCameraToGoal();
+      });
+      initialCameraAligned = true;
+    } catch (error) {
+      console.warn("Unable to align initial model-viewer cameras.", error);
+    }
+  };
+
   const listeners = availableViewers.map((source) => {
     const handleCameraChange = () => {
       if (syncing || source.dataset.loadState !== "loaded") return;
@@ -755,6 +785,7 @@ function synchronizeCameras(viewers) {
       });
     };
 
+    source.addEventListener("load", alignInitialCamera);
     source.addEventListener("camera-change", handleCameraChange);
     return { source, handleCameraChange };
   });
@@ -762,6 +793,7 @@ function synchronizeCameras(viewers) {
   return {
     destroy() {
       listeners.forEach(({ source, handleCameraChange }) => {
+        source.removeEventListener("load", alignInitialCamera);
         source.removeEventListener("camera-change", handleCameraChange);
       });
       if (releaseFrame !== null) window.cancelAnimationFrame(releaseFrame);
@@ -777,6 +809,22 @@ function renderResultDemo(item, kind, demo) {
   const viewers = [];
   const poster = item.frames[Math.floor(item.frames.length / 2)] || "";
   const heading = createDemoHeading(item, kind);
+
+  if (item.models.sam3d) {
+    const grid = createElement("div", { className: "demo-grid comparison-demo-grid result-demo-grid" });
+    const stream = createStreamPanel(item, "Input stream");
+    const sam3d = createModelPanel(item, item.leftLabel || "SAM3D", item.models.sam3d, poster);
+    const stream3d = createModelPanel(item, item.rightLabel || "Stream3D", item.models.stream3d, poster);
+
+    controllers.push(stream, sam3d, stream3d);
+    grid.append(stream.element, sam3d.element, stream3d.element);
+    demo.append(heading, grid);
+
+    const cameraSync = synchronizeCameras([sam3d.viewer, stream3d.viewer]);
+    demoControllers[kind] = createCompositeController(controllers, cameraSync);
+    return;
+  }
+
   const grid = createElement("div", { className: "demo-grid result-demo-grid result-grid" });
 
   if (item.leftType === "model") {
@@ -806,14 +854,22 @@ function renderComparisonDemo(item, kind, demo) {
 
   const controllers = [];
   const heading = createDemoHeading(item, kind);
-  const grid = createElement("div", { className: "demo-grid comparison-demo-grid" });
+  const hasInputFrames = item.frames.length > 0;
+  const grid = createElement("div", {
+    className: `demo-grid comparison-demo-grid${hasInputFrames ? "" : " comparison-model-only"}`,
+  });
   const poster = item.frames[Math.floor(item.frames.length / 2)] || "";
-  const stream = createStreamPanel(item, "Input stream");
   const sam3d = createModelPanel(item, "SAM3D", item.models.sam3d, poster);
   const stream3d = createModelPanel(item, "Stream3D", item.models.stream3d, poster);
 
-  controllers.push(stream, sam3d, stream3d);
-  grid.append(stream.element, sam3d.element, stream3d.element);
+  if (hasInputFrames) {
+    const stream = createStreamPanel(item, "Input stream");
+    controllers.push(stream);
+    grid.append(stream.element);
+  }
+
+  controllers.push(sam3d, stream3d);
+  grid.append(sam3d.element, stream3d.element);
   demo.append(heading, grid);
 
   const cameraSync = synchronizeCameras([sam3d.viewer, stream3d.viewer]);
