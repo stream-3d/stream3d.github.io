@@ -3691,7 +3691,7 @@ figcaption {
 }
 
 #comparison-tabs {
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
 .comparison-demo-grid.comparison-model-only {

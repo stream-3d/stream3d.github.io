@@ -131,6 +131,49 @@
   ],
   "comparisons": [
     {
+      "id": "mario",
+      "title": "Mario figure",
+      "dataset": "GSO",
+      "description": "Ground-truth comparison on a recognizable object with articulated limbs and high-frequency color boundaries.",
+      "thumbnail": "./assets/media/frames/mario/frame-04.webp",
+      "totalFrames": 100,
+      "framePositions": [
+        1,
+        10,
+        19,
+        28,
+        37,
+        46,
+        55,
+        64,
+        73,
+        82,
+        91,
+        100
+      ],
+      "leftType": "model",
+      "leftLabel": "Ground truth",
+      "rightLabel": "Stream3D",
+      "frames": [
+        "./assets/media/frames/mario/frame-00.webp",
+        "./assets/media/frames/mario/frame-01.webp",
+        "./assets/media/frames/mario/frame-02.webp",
+        "./assets/media/frames/mario/frame-03.webp",
+        "./assets/media/frames/mario/frame-04.webp",
+        "./assets/media/frames/mario/frame-05.webp",
+        "./assets/media/frames/mario/frame-06.webp",
+        "./assets/media/frames/mario/frame-07.webp",
+        "./assets/media/frames/mario/frame-08.webp",
+        "./assets/media/frames/mario/frame-09.webp",
+        "./assets/media/frames/mario/frame-10.webp",
+        "./assets/media/frames/mario/frame-11.webp"
+      ],
+      "models": {
+        "sam3d": "./assets/media/models/mario/sam3d.glb",
+        "stream3d": "./assets/media/models/mario/stream3d.glb"
+      }
+    },
+    {
       "id": "winged-statue",
       "title": "Winged garden statue",
       "dataset": "DL3DV",
@@ -213,20 +256,6 @@
       }
     },
     {
-      "id": "scan24",
-      "title": "DTU scan 24",
-      "dataset": "DTU",
-      "description": "A controlled multi-view scan with thin structures and strong geometric detail.",
-      "thumbnail": "./assets/media/frames/scan24/preview.png",
-      "totalFrames": 0,
-      "framePositions": [],
-      "frames": [],
-      "models": {
-        "sam3d": "./assets/media/models/scan24/sam3d.glb",
-        "stream3d": "./assets/media/models/scan24/stream3d.glb"
-      }
-    },
-    {
       "id": "leather",
       "title": "Leather loafer",
       "dataset": "GSO",
@@ -267,49 +296,6 @@
       "models": {
         "sam3d": "./assets/media/models/leather/sam3d.glb",
         "stream3d": "./assets/media/models/leather/stream3d.glb"
-      }
-    },
-    {
-      "id": "mario",
-      "title": "Mario figure",
-      "dataset": "GSO",
-      "description": "Ground-truth comparison on a recognizable object with articulated limbs and high-frequency color boundaries.",
-      "thumbnail": "./assets/media/frames/mario/frame-04.webp",
-      "totalFrames": 100,
-      "framePositions": [
-        1,
-        10,
-        19,
-        28,
-        37,
-        46,
-        55,
-        64,
-        73,
-        82,
-        91,
-        100
-      ],
-      "leftType": "model",
-      "leftLabel": "Ground truth",
-      "rightLabel": "Stream3D",
-      "frames": [
-        "./assets/media/frames/mario/frame-00.webp",
-        "./assets/media/frames/mario/frame-01.webp",
-        "./assets/media/frames/mario/frame-02.webp",
-        "./assets/media/frames/mario/frame-03.webp",
-        "./assets/media/frames/mario/frame-04.webp",
-        "./assets/media/frames/mario/frame-05.webp",
-        "./assets/media/frames/mario/frame-06.webp",
-        "./assets/media/frames/mario/frame-07.webp",
-        "./assets/media/frames/mario/frame-08.webp",
-        "./assets/media/frames/mario/frame-09.webp",
-        "./assets/media/frames/mario/frame-10.webp",
-        "./assets/media/frames/mario/frame-11.webp"
-      ],
-      "models": {
-        "sam3d": "./assets/media/models/mario/sam3d.glb",
-        "stream3d": "./assets/media/models/mario/stream3d.glb"
       }
     },
     {
