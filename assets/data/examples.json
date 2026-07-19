@@ -256,49 +256,6 @@
       }
     },
     {
-      "id": "leather",
-      "title": "Leather loafer",
-      "dataset": "GSO",
-      "description": "Ground-truth comparison on a dark leather shoe with a smooth upper, layered sole, and subtle material boundaries.",
-      "thumbnail": "./assets/media/frames/leather/frame-04.jpg",
-      "totalFrames": 100,
-      "framePositions": [
-        1,
-        10,
-        19,
-        28,
-        37,
-        46,
-        55,
-        64,
-        73,
-        82,
-        91,
-        100
-      ],
-      "leftType": "model",
-      "leftLabel": "Ground truth",
-      "rightLabel": "Stream3D",
-      "frames": [
-        "./assets/media/frames/leather/frame-00.jpg",
-        "./assets/media/frames/leather/frame-01.jpg",
-        "./assets/media/frames/leather/frame-02.jpg",
-        "./assets/media/frames/leather/frame-03.jpg",
-        "./assets/media/frames/leather/frame-04.jpg",
-        "./assets/media/frames/leather/frame-05.jpg",
-        "./assets/media/frames/leather/frame-06.jpg",
-        "./assets/media/frames/leather/frame-07.jpg",
-        "./assets/media/frames/leather/frame-08.jpg",
-        "./assets/media/frames/leather/frame-09.jpg",
-        "./assets/media/frames/leather/frame-10.jpg",
-        "./assets/media/frames/leather/frame-11.jpg"
-      ],
-      "models": {
-        "sam3d": "./assets/media/models/leather/sam3d.glb",
-        "stream3d": "./assets/media/models/leather/stream3d.glb"
-      }
-    },
-    {
       "id": "elephant",
       "title": "Elephant plush",
       "dataset": "GSO",
