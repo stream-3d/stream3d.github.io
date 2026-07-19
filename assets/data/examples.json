@@ -1,6 +1,138 @@
 {
   "results": [
     {
+      "id": "mario",
+      "title": "Mario figure",
+      "dataset": "GSO",
+      "description": "Ground-truth comparison on a recognizable object with articulated limbs and high-frequency color boundaries.",
+      "thumbnail": "./assets/media/frames/mario/frame-04.webp",
+      "totalFrames": 100,
+      "framePositions": [
+        1,
+        10,
+        19,
+        28,
+        37,
+        46,
+        55,
+        64,
+        73,
+        82,
+        91,
+        100
+      ],
+      "leftType": "model",
+      "leftLabel": "Ground truth",
+      "rightLabel": "Stream3D",
+      "frames": [
+        "./assets/media/frames/mario/frame-00.webp",
+        "./assets/media/frames/mario/frame-01.webp",
+        "./assets/media/frames/mario/frame-02.webp",
+        "./assets/media/frames/mario/frame-03.webp",
+        "./assets/media/frames/mario/frame-04.webp",
+        "./assets/media/frames/mario/frame-05.webp",
+        "./assets/media/frames/mario/frame-06.webp",
+        "./assets/media/frames/mario/frame-07.webp",
+        "./assets/media/frames/mario/frame-08.webp",
+        "./assets/media/frames/mario/frame-09.webp",
+        "./assets/media/frames/mario/frame-10.webp",
+        "./assets/media/frames/mario/frame-11.webp"
+      ],
+      "models": {
+        "sam3d": "./assets/media/models/mario/sam3d.glb",
+        "stream3d": "./assets/media/models/mario/stream3d.glb",
+        "gt": "./assets/media/models/mario/gt.glb?v=20260719-yaw-45"
+      }
+    },
+    {
+      "id": "elephant",
+      "title": "Elephant plush",
+      "dataset": "GSO",
+      "thumbnail": "./assets/media/frames/elephant/frame-04.webp",
+      "totalFrames": 100,
+      "framePositions": [
+        1,
+        10,
+        19,
+        28,
+        37,
+        46,
+        55,
+        64,
+        73,
+        82,
+        91,
+        100
+      ],
+      "frames": [
+        "./assets/media/frames/elephant/frame-00.webp",
+        "./assets/media/frames/elephant/frame-01.webp",
+        "./assets/media/frames/elephant/frame-02.webp",
+        "./assets/media/frames/elephant/frame-03.webp",
+        "./assets/media/frames/elephant/frame-04.webp",
+        "./assets/media/frames/elephant/frame-05.webp",
+        "./assets/media/frames/elephant/frame-06.webp",
+        "./assets/media/frames/elephant/frame-07.webp",
+        "./assets/media/frames/elephant/frame-08.webp",
+        "./assets/media/frames/elephant/frame-09.webp",
+        "./assets/media/frames/elephant/frame-10.webp",
+        "./assets/media/frames/elephant/frame-11.webp"
+      ],
+      "models": {
+        "sam3d": "./assets/media/models/elephant/sam3d.glb",
+        "stream3d": "./assets/media/models/elephant/stream3d.glb",
+        "gt": "./assets/media/models/elephant/gt.glb?v=20260719-yaw-90"
+      },
+      "leftType": "model",
+      "leftLabel": "Ground truth",
+      "rightLabel": "Stream3D"
+    },
+    {
+      "id": "teapot",
+      "title": "Ceramic teapot",
+      "dataset": "GSO",
+      "thumbnail": "./assets/media/frames/teapot/frame-04.jpg",
+      "totalFrames": 100,
+      "framePositions": [
+        1,
+        10,
+        19,
+        28,
+        37,
+        46,
+        55,
+        64,
+        73,
+        82,
+        91,
+        100
+      ],
+      "frames": [
+        "./assets/media/frames/teapot/frame-00.jpg",
+        "./assets/media/frames/teapot/frame-01.jpg",
+        "./assets/media/frames/teapot/frame-02.jpg",
+        "./assets/media/frames/teapot/frame-03.jpg",
+        "./assets/media/frames/teapot/frame-04.jpg",
+        "./assets/media/frames/teapot/frame-05.jpg",
+        "./assets/media/frames/teapot/frame-06.jpg",
+        "./assets/media/frames/teapot/frame-07.jpg",
+        "./assets/media/frames/teapot/frame-08.jpg",
+        "./assets/media/frames/teapot/frame-09.jpg",
+        "./assets/media/frames/teapot/frame-10.jpg",
+        "./assets/media/frames/teapot/frame-11.jpg"
+      ],
+      "models": {
+        "sam3d": "./assets/media/models/teapot/sam3d.glb",
+        "stream3d": "./assets/media/models/teapot/stream3d.glb",
+        "gt": "./assets/media/models/teapot/gt.glb?v=20260719-yaw-neg45"
+      },
+      "leftType": "model",
+      "leftLabel": "Ground truth",
+      "rightLabel": "Stream3D"
+    }
+  ],
+  "comparisons": [
+    {
       "id": "seated-statue",
       "title": "Seated stone statue",
       "dataset": "DL3DV",
@@ -21,7 +153,7 @@
         248,
         272
       ],
-      "leftLabel": "SAM3D",
+      "leftLabel": "Input stream",
       "rightLabel": "Stream3D",
       "frames": [
         "./assets/media/frames/seated-statue/frame-00.png",
@@ -40,7 +172,8 @@
       "models": {
         "sam3d": "./assets/media/models/seated-statue/sam3d.glb",
         "stream3d": "./assets/media/models/seated-statue/stream3d.glb"
-      }
+      },
+      "leftType": "stream"
     },
     {
       "id": "vintage-car",
@@ -64,7 +197,7 @@
         344
       ],
       "leftType": "stream",
-      "leftLabel": "SAM3D",
+      "leftLabel": "Input stream",
       "rightLabel": "Stream3D",
       "frames": [
         "./assets/media/frames/vintage-car/frame-00.webp",
@@ -107,7 +240,7 @@
         64
       ],
       "leftType": "stream",
-      "leftLabel": "SAM3D",
+      "leftLabel": "Input stream",
       "rightLabel": "Stream3D",
       "frames": [
         "./assets/media/frames/pastel-castle/frame-00.webp",
@@ -126,51 +259,6 @@
       "models": {
         "sam3d": "./assets/media/models/pastel-castle/sam3d.glb",
         "stream3d": "./assets/media/models/pastel-castle/stream3d.glb"
-      }
-    }
-  ],
-  "comparisons": [
-    {
-      "id": "mario",
-      "title": "Mario figure",
-      "dataset": "GSO",
-      "description": "Ground-truth comparison on a recognizable object with articulated limbs and high-frequency color boundaries.",
-      "thumbnail": "./assets/media/frames/mario/frame-04.webp",
-      "totalFrames": 100,
-      "framePositions": [
-        1,
-        10,
-        19,
-        28,
-        37,
-        46,
-        55,
-        64,
-        73,
-        82,
-        91,
-        100
-      ],
-      "leftType": "model",
-      "leftLabel": "Ground truth",
-      "rightLabel": "Stream3D",
-      "frames": [
-        "./assets/media/frames/mario/frame-00.webp",
-        "./assets/media/frames/mario/frame-01.webp",
-        "./assets/media/frames/mario/frame-02.webp",
-        "./assets/media/frames/mario/frame-03.webp",
-        "./assets/media/frames/mario/frame-04.webp",
-        "./assets/media/frames/mario/frame-05.webp",
-        "./assets/media/frames/mario/frame-06.webp",
-        "./assets/media/frames/mario/frame-07.webp",
-        "./assets/media/frames/mario/frame-08.webp",
-        "./assets/media/frames/mario/frame-09.webp",
-        "./assets/media/frames/mario/frame-10.webp",
-        "./assets/media/frames/mario/frame-11.webp"
-      ],
-      "models": {
-        "sam3d": "./assets/media/models/mario/sam3d.glb",
-        "stream3d": "./assets/media/models/mario/stream3d.glb"
       }
     },
     {
@@ -210,7 +298,10 @@
       "models": {
         "sam3d": "./assets/media/models/winged-statue/sam3d.glb",
         "stream3d": "./assets/media/models/winged-statue/stream3d.glb"
-      }
+      },
+      "leftType": "stream",
+      "leftLabel": "Input stream",
+      "rightLabel": "Stream3D"
     },
     {
       "id": "cannon",
@@ -256,45 +347,6 @@
       }
     },
     {
-      "id": "elephant",
-      "title": "Elephant plush",
-      "dataset": "GSO",
-      "thumbnail": "./assets/media/frames/elephant/frame-04.webp",
-      "totalFrames": 100,
-      "framePositions": [
-        1,
-        10,
-        19,
-        28,
-        37,
-        46,
-        55,
-        64,
-        73,
-        82,
-        91,
-        100
-      ],
-      "frames": [
-        "./assets/media/frames/elephant/frame-00.webp",
-        "./assets/media/frames/elephant/frame-01.webp",
-        "./assets/media/frames/elephant/frame-02.webp",
-        "./assets/media/frames/elephant/frame-03.webp",
-        "./assets/media/frames/elephant/frame-04.webp",
-        "./assets/media/frames/elephant/frame-05.webp",
-        "./assets/media/frames/elephant/frame-06.webp",
-        "./assets/media/frames/elephant/frame-07.webp",
-        "./assets/media/frames/elephant/frame-08.webp",
-        "./assets/media/frames/elephant/frame-09.webp",
-        "./assets/media/frames/elephant/frame-10.webp",
-        "./assets/media/frames/elephant/frame-11.webp"
-      ],
-      "models": {
-        "sam3d": "./assets/media/models/elephant/sam3d.glb",
-        "stream3d": "./assets/media/models/elephant/stream3d.glb"
-      }
-    },
-    {
       "id": "tiger",
       "title": "Tiger statue",
       "dataset": "DL3DV",
@@ -331,46 +383,10 @@
       "models": {
         "sam3d": "./assets/media/models/tiger/sam3d.glb",
         "stream3d": "./assets/media/models/tiger/stream3d.glb"
-      }
-    },
-    {
-      "id": "teapot",
-      "title": "Ceramic teapot",
-      "dataset": "GSO",
-      "thumbnail": "./assets/media/frames/teapot/frame-04.jpg",
-      "totalFrames": 100,
-      "framePositions": [
-        1,
-        10,
-        19,
-        28,
-        37,
-        46,
-        55,
-        64,
-        73,
-        82,
-        91,
-        100
-      ],
-      "frames": [
-        "./assets/media/frames/teapot/frame-00.jpg",
-        "./assets/media/frames/teapot/frame-01.jpg",
-        "./assets/media/frames/teapot/frame-02.jpg",
-        "./assets/media/frames/teapot/frame-03.jpg",
-        "./assets/media/frames/teapot/frame-04.jpg",
-        "./assets/media/frames/teapot/frame-05.jpg",
-        "./assets/media/frames/teapot/frame-06.jpg",
-        "./assets/media/frames/teapot/frame-07.jpg",
-        "./assets/media/frames/teapot/frame-08.jpg",
-        "./assets/media/frames/teapot/frame-09.jpg",
-        "./assets/media/frames/teapot/frame-10.jpg",
-        "./assets/media/frames/teapot/frame-11.jpg"
-      ],
-      "models": {
-        "sam3d": "./assets/media/models/teapot/sam3d.glb",
-        "stream3d": "./assets/media/models/teapot/stream3d.glb"
-      }
+      },
+      "leftType": "stream",
+      "leftLabel": "Input stream",
+      "rightLabel": "Stream3D"
     }
   ]
 }

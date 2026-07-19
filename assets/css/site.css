@@ -3324,6 +3324,12 @@ figcaption {
   .result-demo-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .gt-result-grid .ground-truth-panel {
+    width: calc(50% - 8px);
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
 }
 
 @media (min-width: 761px) and (max-width: 980px) {
@@ -3376,6 +3382,11 @@ figcaption {
   .comparison-demo-grid .stream-panel {
     grid-column: auto;
     width: 100%;
+  }
+
+  .gt-result-grid .ground-truth-panel {
+    width: 100%;
+    grid-column: auto;
   }
 
   .stream-viewport,

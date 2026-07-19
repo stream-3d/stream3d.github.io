@@ -1,4 +1,4 @@
-const EXAMPLES_URL = "./assets/data/examples.json?v=20260719-gallery-5";
+const EXAMPLES_URL = "./assets/data/examples.json?v=20260719-gallery-9";
 const FRAME_INTERVAL_MS = 900;
 const VIEWER_DEFINITION_TIMEOUT_MS = 15000;
 
@@ -806,45 +806,25 @@ function renderResultDemo(item, kind, demo) {
   demo.replaceChildren();
 
   const controllers = [];
-  const viewers = [];
   const poster = item.frames[Math.floor(item.frames.length / 2)] || "";
   const heading = createDemoHeading(item, kind);
-
-  if (item.models.sam3d) {
-    const grid = createElement("div", { className: "demo-grid comparison-demo-grid result-demo-grid" });
-    const stream = createStreamPanel(item, "Input stream");
-    const sam3d = createModelPanel(item, item.leftLabel || "SAM3D", item.models.sam3d, poster);
-    const stream3d = createModelPanel(item, item.rightLabel || "Stream3D", item.models.stream3d, poster);
-
-    controllers.push(stream, sam3d, stream3d);
-    grid.append(stream.element, sam3d.element, stream3d.element);
-    demo.append(heading, grid);
-
-    const cameraSync = synchronizeCameras([sam3d.viewer, stream3d.viewer]);
-    demoControllers[kind] = createCompositeController(controllers, cameraSync);
-    return;
-  }
-
-  const grid = createElement("div", { className: "demo-grid result-demo-grid result-grid" });
-
-  if (item.leftType === "model") {
-    const groundTruth = createModelPanel(item, item.leftLabel || "Ground truth", item.models.gt, poster);
-    controllers.push(groundTruth);
-    if (groundTruth.viewer) viewers.push(groundTruth.viewer);
-    grid.append(groundTruth.element);
-  } else {
-    const stream = createStreamPanel(item, item.leftLabel || "Input stream");
-    controllers.push(stream);
-    grid.append(stream.element);
-  }
-
+  const grid = createElement("div", {
+    className: "demo-grid comparison-demo-grid result-demo-grid gt-result-grid",
+  });
+  const groundTruth = createModelPanel(item, "Ground truth", item.models.gt, poster);
+  const sam3d = createModelPanel(item, "SAM3D", item.models.sam3d, poster);
   const stream3d = createModelPanel(item, item.rightLabel || "Stream3D", item.models.stream3d, poster);
-  controllers.push(stream3d);
-  if (stream3d.viewer) viewers.push(stream3d.viewer);
-  grid.append(stream3d.element);
+  groundTruth.element.classList.add("ground-truth-panel");
 
+  controllers.push(groundTruth, sam3d, stream3d);
+  grid.append(groundTruth.element, sam3d.element, stream3d.element);
   demo.append(heading, grid);
-  const cameraSync = synchronizeCameras(viewers);
+
+  const cameraSync = synchronizeCameras([
+    groundTruth.viewer,
+    sam3d.viewer,
+    stream3d.viewer,
+  ]);
   demoControllers[kind] = createCompositeController(controllers, cameraSync);
 }
 
