@@ -124,7 +124,7 @@
       "models": {
         "sam3d": "./assets/media/models/teapot/sam3d.glb",
         "stream3d": "./assets/media/models/teapot/stream3d.glb",
-        "gt": "./assets/media/models/teapot/gt.glb?v=20260719-yaw-neg45"
+        "gt": "./assets/media/models/teapot/gt.glb?v=20260719-yaw-135"
       },
       "leftType": "model",
       "leftLabel": "Ground truth",

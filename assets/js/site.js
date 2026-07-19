@@ -1,4 +1,4 @@
-const EXAMPLES_URL = "./assets/data/examples.json?v=20260719-gallery-9";
+const EXAMPLES_URL = "./assets/data/examples.json?v=20260719-gallery-10";
 const FRAME_INTERVAL_MS = 900;
 const VIEWER_DEFINITION_TIMEOUT_MS = 15000;
 
